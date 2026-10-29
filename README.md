@@ -35,7 +35,7 @@ Respecto a la versión anterior (`simulacion termica.py`), esta versión cambia 
 - **Cuidado con vJoy:** deja los controles en reposo al abrir y cerrar, los reinicia cuando el juego conecta y tiene un botón "Reiniciar controles".
 - **Diagnóstico:** una pestaña que revisa si están conectados el juego (telemetría), vJoy, el servidor web, tu volante o mando y la memoria térmica.
 
-> La versión anterior sigue disponible en [Releases](../../releases) (`v0.1-anterior`).
+> La versión anterior sigue disponible en [Releases](../../releases) (`v0.1`).
 
 ---
 
