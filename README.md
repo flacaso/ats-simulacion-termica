@@ -40,6 +40,11 @@ Respecto a la versión anterior (`simulacion termica.py`), esta versión cambia 
 ---
 
 ## 🛠️ Requisitos Indispensables
+## 🔧 Mod recomendado: Flacooo Physics & FFB Pack
+
+Todas las calibraciones del frenado se hicieron en ATS (1.61+) con el mod **[Flacooo Physics & FFB Pack](https://steamcommunity.com/sharedfiles/filedetails/?id=3821886843)** del Steam Workshop, que ajusta la física del juego, incluido el torque de los frenos (`brake_torque_factor: 0.35`). Para obtener el realismo para el que está calibrado Termofreno, puedes suscríbete al mod antes de usar el programa.
+
+Sin el mod, el programa funciona igual y aprende la fuerza de frenado de cada camión mientras frenas, pero los resultados no están validados y el frenado puede sentirse distinto.
 
 Para que el programa funcione correctamente, necesitas tener instalados dos componentes externos gratuitos:
 
