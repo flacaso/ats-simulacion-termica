@@ -1,0 +1,14 @@
+# Entorno y compilacion
+.venv_build/
+build/
+dist/
+__pycache__/
+*.spec
+
+# Archivos que el programa genera al ejecutarse
+config_frenos.json
+k_freno_guardado.json
+memoria_termica.json
+pruebas_frenado/
+vjoy_log.txt
+termofreno_log.txt
