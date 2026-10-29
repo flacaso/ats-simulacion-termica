@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Termofreno</title>
+<style>
+:root{--bg:#131a23;--sb:#0f151d;--pn:#1a2330;--key:#243042;--ln:#33425a;--tx:#e8edf4;--mu:#8d9bb0;--ok:#52d6c4;--am:#ffb347;--rd:#ff5a4d;--z:var(--ok);
+font-family:"Segoe UI Variable","Segoe UI",system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box;-webkit-user-select:none;user-select:none}
+html,body{height:100%;margin:0;overflow:hidden}body{background:var(--bg);color:var(--tx);display:grid;grid-template-columns:210px 1fr}
+.sb{background:var(--sb);border-right:1px solid var(--ln);padding:18px 12px;display:flex;flex-direction:column;gap:4px}
+.logo{display:flex;gap:10px;align-items:center;padding:0 8px 18px}.logo i{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#ffb347,#ff7a45);display:grid;place-items:center;color:#2a1600;font:700 18px "Segoe UI",sans-serif;font-style:normal}
+.logo img{width:40px;height:40px;flex:none}.logo .mx{display:block;width:40px;height:3px;margin-top:5px;border-radius:2px;background:linear-gradient(90deg,#1f9d55 0 33.3%,#f4f4f4 33.3% 66.6%,#d6322b 66.6%)}.logo b{font-size:15px;line-height:1.15}.logo small{display:block;color:var(--mu);font-size:11px;font-weight:400}
+.nv{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:var(--mu);font-size:14px;cursor:pointer;border:0;background:none;text-align:left;font-family:inherit;transition:background .15s,color .15s}.nv:hover{background:var(--pn);color:var(--tx)}.nv.on{background:var(--key);color:var(--tx);box-shadow:inset 3px 0 0 var(--am)}
+.ft{margin-top:auto;font-size:11px;color:var(--mu);padding:8px}
+main{padding:22px 26px;overflow:auto;min-height:0}.vw{display:none}.vw.on{display:block}
+.hd{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}.hd h1{margin:0;font-size:22px;font-weight:600;margin-right:auto}
+.chip{display:flex;align-items:center;gap:7px;font-size:12px;padding:6px 11px;border-radius:99px;background:var(--pn);border:1px solid var(--ln)}.chip i{width:8px;height:8px;border-radius:50%;background:var(--rd)}.chip.ok i{background:#4ade80;box-shadow:0 0 8px #4ade80}.chip.wa i{background:var(--am)}
+.gr{display:grid;grid-template-columns:1.05fr 1fr;gap:16px}.col{display:flex;flex-direction:column;gap:14px}
+.cd{background:var(--pn);border:1px solid var(--ln);border-radius:18px;padding:16px}.cd h2{margin:0 0 10px;font-size:13px;font-weight:600;color:var(--mu)}.cd p{margin:0 0 10px;font-size:13px;color:var(--mu)}
+.L{background:linear-gradient(180deg,#1d2837,#17202c)}svg.g{width:100%;display:block}.tr{fill:none;stroke:#27344a;stroke-width:14;stroke-linecap:round}.vl{fill:none;stroke:var(--z);stroke-width:14;stroke-linecap:round;stroke-dasharray:0 251.33;transition:stroke-dasharray .35s,stroke .3s;filter:drop-shadow(0 0 5px var(--z))}
+.tn{font-size:42px;font-weight:600;text-anchor:middle;fill:var(--tx)}.tl{font-size:10.5px;text-anchor:middle;fill:var(--z)}
+.st{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ln);margin-top:8px}.st div{padding:10px 6px 0}.st span{font-size:12px;color:var(--mu);display:block}.st b{font-size:26px;font-weight:600}
+.bg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bt{border:1px solid var(--ln);background:var(--key);color:var(--tx);border-radius:12px;padding:9px 14px;font:inherit;font-size:13px;cursor:pointer;transition:.08s}.bt:hover{background:#2e3d52}.bt:active{transform:translateY(2px)}
+.big{padding:16px 12px;text-align:left;border-radius:14px;box-shadow:0 3px 0 #1a2433}.big b{display:block;font-size:15px;margin-bottom:3px}.big small{color:var(--mu);font-size:12px}
+.rw{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--ln);font-size:13px}.rw:first-of-type{border-top:0}.rw span{flex:1;color:var(--mu)}.rw code{color:var(--am);font-size:12px}
+select{width:100%;background:var(--key);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:10px;font:inherit;font-size:14px}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.sg .bt.on{border-color:var(--am);background:#2d3a4c}
+label.ck{display:flex;gap:10px;align-items:center;font-size:14px;margin-bottom:6px}input[type=checkbox]{accent-color:var(--am);width:18px;height:18px}
+.ax{display:grid;grid-template-columns:90px 1fr 42px;gap:8px;align-items:center;margin:9px 0;font-size:13px}input[type=range]{accent-color:var(--am);width:100%;cursor:pointer}.ax em{font-style:normal;color:var(--mu);text-align:right}
+.tp{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.tp .bt.on{border-color:var(--am);background:#2d3a4c;box-shadow:0 0 0 1px var(--am) inset}.sgm{display:flex;gap:3px}.sgm i{flex:1;height:16px;border-radius:4px;background:#243042}.sgm i.on{background:var(--c);box-shadow:0 0 6px var(--c)}
+.ps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}.p{border:1px solid var(--ln);background:var(--key);border-radius:14px;padding:14px;cursor:pointer;transition:.12s}.p b{display:block;font-size:15px}.p small{color:var(--mu);font-size:12px}.p.on{border-color:var(--am);background:#2d3a4c;box-shadow:0 0 0 1px var(--am) inset}
+.sl{position:relative;height:50px;margin:8px 8px 2px;cursor:pointer;touch-action:none}.sl .tk{position:absolute;left:0;right:0;top:20px;height:10px;border-radius:6px;background:linear-gradient(90deg,var(--a),#ffd166,var(--b));box-shadow:0 0 0 3px #0c121a}
+.th{position:absolute;top:3px;width:44px;height:44px;margin-left:-22px;border-radius:50%;display:grid;place-items:center;box-shadow:0 4px 0 #06090d,inset 0 2px 0 #fff3}.th svg{width:30px;height:30px}.th.llama{background:#d9480f}.th.copo{background:#1c7ed6}.th.trailer{background:#2f9e6e}
+.sd{font-size:12.5px;color:var(--mu);margin:0 8px 14px}
+.dg{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--ln)}.dg:first-of-type{border-top:0}.dg i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;background:#4ade8033;color:#4ade80}.dg.no i{background:#ff5a4d33;color:var(--rd)}.dg b{font-size:14px;display:block}.dg small{color:var(--mu);font-size:12.5px}
+.md{position:fixed;inset:0;background:#05080cd9;display:none;place-items:center;z-index:9}.md.on{display:grid}.mb{background:var(--pn);border:1px solid var(--ln);border-radius:20px;padding:22px;width:360px;text-align:center}
+.mb h3{margin:0 0 4px;font-size:18px}.mb p{margin:0 0 14px;font-size:13px;color:var(--mu)}.qb{background:#fff;border-radius:14px;padding:10px;width:230px;margin:0 auto 12px}.qb svg{width:100%;height:auto;display:block}.qb em{display:block;color:#222;font-size:12px;font-style:normal;padding:30px 6px}
+.mb code{display:block;padding:8px;border-radius:8px;background:#0f1520;color:var(--am);font-size:12px;margin-bottom:12px;word-break:break-all;user-select:text}.mb .bg{margin-bottom:10px}
+a[data-open]{color:var(--am);cursor:pointer;text-decoration:underline;text-underline-offset:3px}.cd p b{color:var(--tx)}ol{margin:0 0 12px 18px;padding:0;font-size:13px;color:var(--mu);line-height:1.7}.kv{display:grid;grid-template-columns:1fr auto;gap:8px 14px;font-size:13px}.kv span{color:var(--mu)}.kv b{text-align:right;font-weight:600}input[type=number],input[type=text]{background:var(--key);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:9px 10px;font:inherit;font-size:14px;width:100%;user-select:text}.rw2{display:flex;gap:8px;margin:8px 0}.rw2 input{flex:1;min-width:0}.cd label.lb{display:block;font-size:12.5px;color:var(--mu);margin:12px 0 4px}.pend{display:flex;align-items:center;gap:16px}.pend svg{width:150px;flex:none}.pend .gd{stroke:var(--ok);stroke-width:5;stroke-linecap:round;transition:stroke .3s}.pend .nm{font-size:34px;font-weight:600;line-height:1}.pend small{display:block;color:var(--mu);font-size:12.5px;margin-top:4px}
+.pend.mal .gd{stroke:var(--am)}.pend.off{opacity:.45}.apt{margin:12px 0 0;font-size:12.5px;padding:7px 10px;border-radius:10px;background:#4ade8022;color:#4ade80}.apt.no{background:#ffb34722;color:var(--am)}
+.gp{display:grid;grid-template-columns:1fr 1fr;gap:18px}.gtt{font-size:22px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:center;margin-bottom:2px}.gtt small{display:block;font-size:11.5px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--mu)}
+.cg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}main.tight{padding:10px 18px}
+#v-calibracion .hd{margin-bottom:8px}#v-calibracion .hd h1{font-size:19px}#v-calibracion .cd{padding:10px 14px;border-radius:14px}#v-calibracion .cd h2{margin:0 0 4px;font-size:12px}#v-calibracion .cd p{margin:0 0 6px;font-size:12px}
+#v-calibracion .gp{gap:8px}#v-calibracion .gtt{font-size:16px;margin-bottom:0}#v-calibracion .gtt small{font-size:10.5px}#v-calibracion svg.g{max-width:clamp(140px,24vh,230px);margin:0 auto}
+#v-calibracion .ax{margin:6px 0;grid-template-columns:78px 1fr 34px;font-size:12.5px}#v-calibracion .sgm i{height:13px}
+#v-calibracion .pend svg{width:96px}#v-calibracion .pend .nm{font-size:28px}#v-calibracion .apt{margin:8px 0 0;font-size:11.5px;padding:5px 9px}#v-calibracion .kv{font-size:12px;gap:4px 12px}
+#v-calibracion label.ck{font-size:13px;margin-bottom:4px}#v-calibracion label.lb{margin:8px 0 3px;font-size:12px}#v-calibracion .rw2{margin:0}#v-calibracion .bt{padding:7px 11px;font-size:12.5px;white-space:nowrap}#v-calibracion .tp .bt{padding:7px 4px}
+#v-calibracion input[type=number],#v-calibracion input[type=text]{padding:7px 9px;font-size:13px}
+#v-calibracion details{font-size:12px;color:var(--mu)}#v-calibracion summary{cursor:pointer;padding:6px 2px}#v-calibracion ol{font-size:12px;line-height:1.5;margin:4px 0 6px 18px}
+@media (max-height:660px){#v-calibracion .cd{padding:8px 12px}#v-calibracion svg.g{max-width:128px}#v-calibracion .apt{display:none}#v-calibracion .ax{margin:4px 0}#v-calibracion label.lb{margin:5px 0 2px}#v-calibracion .pend svg{width:80px}#v-calibracion .pend .nm{font-size:24px}#v-calibracion #cal-d{display:none}#v-calibracion label.ck{margin-bottom:2px}main.tight{padding:8px 16px}}
+#cal-u .kv{grid-template-columns:1fr auto 1fr auto;gap:5px 12px}#cal-u .kv b{white-space:nowrap}
+
+:root{--num:"Bahnschrift","Segoe UI Variable","Segoe UI",system-ui,sans-serif;--zv:#28d66c;--za:#ffb020;--zr:#ff3d2e}
+.tn,.st b,.gtt,.pend .nm,.hd h1,.logo b,.tl{font-family:var(--num);font-variant-numeric:tabular-nums}
+svg.dial{max-width:270px;margin:0 auto}.dial .bz{fill:#0a0e15;stroke:#4a5568;stroke-width:3}.dial .bz2{fill:none;stroke:#1d2633;stroke-width:5}
+.dial .zn path{fill:none;stroke-width:8}.dial .zn path:nth-child(1){stroke:var(--zv)}.dial .zn path:nth-child(2){stroke:var(--za)}.dial .zn path:nth-child(3){stroke:var(--zr)}
+.dial .tk line{stroke:#e8edf4;stroke-width:1.6}.dial .tk text{font:600 8.5px var(--num);fill:#aab6c8;text-anchor:middle;dominant-baseline:middle}
+.dial .nd{transform-origin:100px 92px;transform:rotate(-135deg);transition:transform .45s cubic-bezier(.3,1.35,.5,1)}.dial .nd polygon{fill:#ff5a3c;filter:drop-shadow(1px 2px 1.5px #000a)}
+.dial .hb{fill:#c9d1de;stroke:#2a3340;stroke-width:2}.dial .tn{font-size:27px;fill:var(--z,var(--tx))}.dial .tl{font-size:8.5px;fill:var(--mu)}
+.tg{display:flex;gap:10px;justify-content:center;margin-top:6px}.tg span{display:flex;align-items:center;gap:6px;font:600 11px var(--num);letter-spacing:.06em;text-transform:uppercase;padding:5px 10px;border-radius:8px;background:#0b0f16;border:1px solid var(--ln);color:#3d495d}.tg svg{width:17px;height:17px}
+.tg .am.on{color:var(--am);border-color:var(--am);box-shadow:0 0 12px #ffb02055}.tg .rd.on{color:var(--rd);border-color:var(--rd);animation:pp .5s infinite alternate}@keyframes pp{to{box-shadow:0 0 16px #ff3d2e99;opacity:.6}}
+.chip svg{width:16px;height:16px;color:var(--rd);flex:none}.chip.ok svg{color:#4ade80;filter:drop-shadow(0 0 4px #4ade80)}.chip.wa svg{color:var(--am)}
+#spl{position:fixed;inset:0;z-index:99;background:var(--bg);display:grid;place-content:center;justify-items:center;gap:6px;animation:fo .5s 1.9s forwards}#spl h1{margin:0;font:700 34px var(--num);letter-spacing:.14em;text-transform:uppercase}#spl p{margin:0;color:var(--mu);font-size:13px}#spd{width:250px}
+@keyframes fo{to{opacity:0;visibility:hidden}}@keyframes bar{0%{transform:rotate(-135deg)}45%{transform:rotate(118deg)}100%{transform:rotate(-20deg)}}
+
+/* iconos de la barra lateral: trazo 1.8 en cuadricula 24x24, mismo estilo que el resto de instrumentos */
+.nv svg{width:21px;height:21px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;opacity:.7;transition:opacity .15s,color .15s,transform .15s,filter .15s}
+.nv:hover svg{opacity:1;transform:scale(1.08)}
+.nv.on svg{opacity:1;color:var(--am);filter:drop-shadow(0 0 4px #ffb34766)}
+.nv .nd{transform-origin:12px 15px;transition:transform .5s cubic-bezier(.3,1.35,.5,1)}
+.nv:hover .nd,.nv.on .nd{transform:rotate(38deg)}
+@media (prefers-reduced-motion:reduce){.nv svg,.nv .nd{transition:none}}
+
+/* ===== animaciones sutiles ===== */
+.vw.on{animation:vwin .18s ease-out}
+@keyframes vwin{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+.bt{transition:background .15s,transform .12s,box-shadow .15s,border-color .15s}
+.bt:hover{transform:translateY(-1px);box-shadow:0 4px 10px #0006}.bt:active{transform:translateY(2px);box-shadow:none}
+.p{transition:transform .15s,box-shadow .15s,border-color .15s,background .15s}.p:hover{transform:translateY(-2px);border-color:#4a5d7a}
+.dial .tm{transform-origin:100px 92px}
+.dial.tre .tm{animation:tem .09s infinite alternate linear}
+@keyframes tem{from{transform:rotate(calc(var(--amp,1) * -1deg))}to{transform:rotate(calc(var(--amp,1) * 1deg))}}
+html.sa *,html.sa *::before,html.sa *::after{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){.vw.on,.dial.tre .tm{animation:none}}
+/* ===== diagnostico visual ===== */
+.dsum{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;margin-bottom:14px;background:var(--pn);border:1px solid var(--ln)}
+.dsum .ci{width:46px;height:46px;flex:none}.dsum b{display:block;font-size:17px;font-family:var(--num)}.dsum small{color:var(--mu);font-size:12.5px}
+.dsum.ok{border-color:#4ade8066}.dsum.bad{border-color:#ff5a4d66}.dsum.inf{border-color:#ffb34766}
+.dr{border-top:1px solid var(--ln);padding:12px 0}.dr:first-child{border-top:0}
+.dr>.dh{display:flex;align-items:center;gap:12px}.dr .ci{width:32px;height:32px;flex:none}
+.dr b{font-size:14px;display:block}.dr small{color:var(--mu);font-size:12.5px}
+.ci circle{fill:none;stroke-width:1.8}.ci path{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ci.ok{color:#4ade80}.ci.bad{color:var(--rd)}.ci.inf{color:var(--am)}.ci circle,.ci path{stroke:currentColor}
+.ci.ok circle{fill:#4ade8022}.ci.bad circle{fill:#ff5a4d22}.ci.inf circle{fill:#ffb34722}
+.dr .ci{animation:pop .3s cubic-bezier(.3,1.5,.5,1)}@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+.sol{margin:10px 0 0 44px;padding:12px 14px;border-radius:12px;background:#0f1520;border:1px solid var(--ln)}
+.dr.bad .sol{border-left:3px solid var(--rd)}.dr.inf .sol{border-left:3px solid var(--am)}
+.sol h4{margin:0 0 6px;font-size:12.5px;color:var(--am);font-weight:600}.sol ol{margin:0 0 10px 18px}
+.sol .bg{display:flex;gap:8px;flex-wrap:wrap}.sol .bt{padding:7px 12px;font-size:12.5px}
+.nv.al::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--rd);box-shadow:0 0 8px var(--rd);margin-left:auto}
+.mini{display:flex;align-items:center;gap:7px}.mini svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nota{font-size:12px;color:var(--mu);margin:8px 0 0}
+
+/* ===== boton de tema + modo dia ===== */
+.tmb{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:var(--mu);font-size:14px;cursor:pointer;border:0;background:none;text-align:left;font-family:inherit;margin-top:auto;transition:background .15s,color .15s}
+.tmb:hover{background:var(--pn);color:var(--tx)}.tmb svg{width:21px;height:21px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.tmb+.ft{margin-top:0}
+:root[data-tema=dia]{--bg:#eef1f6;--sb:#e2e7ef;--pn:#fff;--key:#e8ecf3;--ln:#cdd5e1;--tx:#1b2230;--mu:#5a6579;--ok:#0f9d8e;--am:#c26a00;--rd:#d93a2c;color-scheme:light}
+:root[data-tema=dia] .L{background:linear-gradient(180deg,#fff,#f0f3f8)}
+:root[data-tema=dia] .bt:hover{background:#d8e0ec;box-shadow:0 4px 10px #1b223018}
+:root[data-tema=dia] .big{box-shadow:0 3px 0 #cdd5e1}
+:root[data-tema=dia] .sg .bt.on,:root[data-tema=dia] .tp .bt.on,:root[data-tema=dia] .p.on{background:#fff1da}
+:root[data-tema=dia] .p:hover{border-color:#9fb0c9}
+:root[data-tema=dia] .sgm i,:root[data-tema=dia] .tg span{background:#dfe5ef}
+:root[data-tema=dia] .tg span{color:#8a96aa;border-color:var(--ln)}
+:root[data-tema=dia] .sol,:root[data-tema=dia] .mb code{background:#f3f5fa}
+:root[data-tema=dia] .sl .tk{box-shadow:0 0 0 3px #e2e7ef}
+:root[data-tema=dia] .th{box-shadow:0 4px 0 #b9c3d4,inset 0 2px 0 #fff6}
+:root[data-tema=dia] .ci.ok,:root[data-tema=dia] .chip.ok svg{color:#16a34a;filter:none}
+:root[data-tema=dia] .apt{color:#15803d}:root[data-tema=dia] .apt.no{color:var(--am)}
+:root[data-tema=dia] .logo img{filter:drop-shadow(0 1px 2px #0003)}
+:root[data-tema=dia] .md{background:#1b2230b3}
+:root[data-tema=dia] .dsum.ok{border-color:#16a34a66}
+/* ===== asistente de primera vez ===== */
+.wz{position:fixed;inset:0;z-index:50;background:#05080ccc;display:none;place-items:center}.wz.on{display:grid;animation:vwin .2s ease-out}
+:root[data-tema=dia] .wz{background:#1b2230b3}
+.wzc{width:min(560px,92vw);max-height:92vh;overflow:auto;background:var(--pn);border:1px solid var(--ln);border-radius:22px;padding:22px 24px;box-shadow:0 20px 60px #0008}
+.wzc h3{margin:0 0 2px;font:700 20px var(--num)}.wzc>small{color:var(--mu);font-size:12.5px}
+.wzd{display:flex;gap:6px;margin:14px 0 16px}.wzd i{flex:1;height:5px;border-radius:4px;background:var(--key);transition:background .2s}.wzd i.on{background:var(--am)}.wzd i.ok{background:#4ade80}
+.wzb{min-height:230px}.wzb p{font-size:13.5px;color:var(--mu);margin:0 0 12px}.wzb .nota{font-size:12px}
+.wzb .dr:first-of-type{border-top:0}.wzb .sol{margin-left:0}
+.wzf{display:flex;align-items:center;gap:8px;margin-top:16px}.wzf .sp{flex:1}
+.wzf .bt.pr{background:var(--am);color:#1b1100;border-color:var(--am);font-weight:600}
+.wzf a{color:var(--mu);font-size:12.5px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;margin-right:8px}
+.pt{display:flex;gap:8px}.pt input{flex:1;min-width:0;background:var(--key);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:9px 10px;font:inherit;font-size:14px}.nota.er{color:var(--rd)}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="n-inicio" viewBox="0 0 24 24"><path d="M4.2 18a9 9 0 1 1 15.6 0"/><path d="M12 5.2v1.4M5.6 8.3l1 .9M18.4 8.3l-1 .9"/><g class="nd"><path d="M12 15l-4-6"/></g><circle cx="12" cy="15" r="1.4"/></symbol>
+<symbol id="n-dispositivo" viewBox="0 0 24 24"><path d="M9.2 3h5.6a1 1 0 0 1 1 1.1L14.9 15H9.1L8.2 4.1A1 1 0 0 1 9.2 3z"/><path d="M10.2 7h3.6M10.4 10h3.2"/><path d="M12 15v3.5M5 21h14"/></symbol>
+<symbol id="n-frenos" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.4"/><path d="M12 6.6h.01M12 17.4h.01M6.6 12h.01M17.4 12h.01"/><path d="M20.5 7.5a10.5 10.5 0 0 1 0 9"/></symbol>
+<symbol id="n-calibracion" viewBox="0 0 24 24"><path d="M5 21v-7M5 10V3M12 21v-9M12 8V3M19 21v-5M19 12V3"/><path d="M2.5 14h5M9.5 8h5M16.5 16h5"/></symbol>
+<symbol id="n-diag" viewBox="0 0 24 24"><path d="M2.5 12.5h4l2-6 4 11 2.5-7 1.5 2h5"/></symbol>
+<symbol id="n-acerca" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.2M12 7.8h.01"/></symbol>
+</defs></svg>
+<div id="spl"><div id="spd"></div><h1>Termofreno</h1><p>frenos térmicos para ETS2 y ATS</p></div>
+<aside class="sb"><div class="logo"><img src="logo_programa.png" alt=""><b>Termofreno<small>frenos térmicos para ETS2 y ATS</small><span class="mx" title="Hecho en México"></span></b></div>
+ <button class="nv on" data-v="inicio" title="Inicio"><svg><use href="#n-inicio"/></svg><span>Inicio</span></button><button class="nv" data-v="dispositivo" title="Dispositivo"><svg><use href="#n-dispositivo"/></svg><span>Dispositivo</span></button><button class="nv" data-v="frenos" title="Frenos"><svg><use href="#n-frenos"/></svg><span>Frenos</span></button><button class="nv" id="nv-cal" data-v="calibracion" title="Calibración" style="display:none"><svg><use href="#n-calibracion"/></svg><span>Calibración</span></button><button class="nv" data-v="diag" title="Diagnóstico"><svg><use href="#n-diag"/></svg><span>Diagnóstico</span></button><button class="nv" data-v="acerca" title="Acerca de"><svg><use href="#n-acerca"/></svg><span>Acerca de</span></button>
+ <button class="tmb" id="tmb"></button><div class="ft">Versión 1.0.0</div></aside>
+<main>
+<section class="vw on" id="v-inicio"><div class="hd"><h1>Inicio</h1><div class="chip" id="c-juego"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M3 12h6.8M14.2 12H21M12 14.2V21"/></svg><span>Esperando al juego</span></div><div class="chip" id="c-vjoy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="15" width="16" height="6" rx="2"/><path d="M12 15V9"/><circle cx="12" cy="6" r="3" fill="currentColor"/></svg><span>vJoy</span></div><div class="chip" id="c-web"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0M5.7 12.4a9.5 9.5 0 0 1 12.6 0M9 15.8a5 5 0 0 1 6 0"/><circle cx="12" cy="19.5" r="1.3" fill="currentColor"/></svg><span>Panel web</span></div><button class="bt mini" id="bmini" title="Ventana pequeña que se queda encima del juego"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><rect x="12" y="10" width="7" height="5" rx="1"/><path d="M8 21h8"/></svg>Mini ventana</button></div>
+<p class="nota" id="nmini" style="margin:-6px 0 12px">Para jugar con un solo monitor: abre el juego en <b>modo ventana sin bordes</b> (en pantalla completa exclusiva la mini ventana no se ve).</p>
+ <div class="gr"><div class="cd L"><h2>Temperatura de frenos</h2>
+  <div id="gs"></div><div class="tg"><span id="t-fa" class="am"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 4a2 2 0 0 1 4 0v9.2a4 4 0 1 1-4 0z"/><path d="M12 9v7"/></svg>Fading</span><span id="t-li" class="rd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M5 6a9 9 0 0 0 0 12M19 6a9 9 0 0 1 0 12M12 10v3M12 15.2v.1"/></svg>Sin frenos</span></div>
+  <div class="st"><div><span>Velocidad</span><b id="sv">0 km/h</b></div><div><span>Eficacia de frenado</span><b id="se">100 %</b></div></div></div>
+ <div class="col"><div class="cd"><h2>Abrir en otros dispositivos</h2><p>Escanea el código con tu tablet o celular (misma red WiFi).</p>
+   <div class="bg"><button class="bt big" data-qr="panel"><b>Panel de tablet</b><small>Botones y controles</small></button><button class="bt big" data-qr="movil"><b>Dashboard móvil</b><small>Telemetría y trabajo</small></button></div></div>
+  <div class="cd"><h2>Para OBS (fuente de navegador)</h2><div id="obs"></div></div>
+  <div class="cd"><h2>Puerto del panel web</h2><p>Si otro programa ya usa el puerto, elige otro número (1024–65535). Después vuelve a escanear el QR en tu tablet y actualiza la dirección en OBS.</p><div class="pt"><input type="number" id="pt-in" min="1024" max="65535" step="1" inputmode="numeric" aria-label="Puerto"><button class="bt" id="pt-ok">Cambiar</button></div><p class="nota" id="pt-n"></p></div></div></div></section>
+<section class="vw" id="v-dispositivo"><div class="hd"><h1>Dispositivo</h1></div>
+ <div class="gr"><div class="cd"><h2>Tu volante o mando</h2><select id="dev"></select>
+  <div class="sg"><button class="bt" data-t="volante">Volante</button><button class="bt" data-t="mando">Mando (gamepad)</button></div>
+  <label class="ck"><input type="checkbox" id="inv"> Invertir el acelerador</label><p>Actívalo si el acelerador marca 100 % con el pedal suelto.</p><button class="bt" id="rv" style="margin-top:6px">Reiniciar controles (vJoy)</button><p style="margin-top:8px">Úsalo si abriste el programa antes que el juego y el acelerador se queda pegado o los botones no responden.</p></div>
+ <div class="cd"><h2>Prueba en vivo</h2><p>Mueve el volante y pisa los pedales para comprobar que responden.</p>
+  <div class="ax"><span>Volante</span><div class="sgm" id="b-vol" style="--c:#4cc9f0"></div><em id="p-vol">0</em></div>
+  <div class="ax"><span>Acelerador</span><div class="sgm" id="b-ace" style="--c:#4ade80"></div><em id="p-ace">0</em></div>
+  <div class="ax"><span>Freno</span><div class="sgm" id="b-fre" style="--c:#ff6b5e"></div><em id="p-fre">0</em></div></div></div></section>
+<section class="vw" id="v-frenos"><div class="hd"><h1>Frenos</h1></div>
+ <div class="cd"><h2>Cómo quieres que se comporten los frenos</h2>
+  <div class="ps"><div class="p" data-c="0.031" data-e="0.004"><b>Arcade</b><small>Se calientan poco</small></div><div class="p" data-c="0.078" data-e="0.002"><b>Realista</b><small>Valores basados en datos reales</small></div><div class="p" data-c="0.14" data-e="0.0012"><b>Extremo</b><small>Hay que dosificar</small></div></div></div>
+ <div class="cd" style="margin-top:14px"><h2>Ajustes avanzados</h2>
+  <div style="font-size:13px;margin:4px 8px 0">Calentamiento al frenar</div><div class="sl" id="s-c" style="--a:#4cc9f0;--b:#ff4d2e"><div class="tk"></div><div class="th"></div></div><div class="sd" id="d-c"></div>
+  <div style="font-size:13px;margin:4px 8px 0">Enfriamiento</div><div class="sl" id="s-e" style="--a:#ff4d2e;--b:#4cc9f0"><div class="tk"></div><div class="th"></div></div><div class="sd" id="d-e"></div></div>
+ <div class="cd" style="margin-top:14px"><h2>Apariencia</h2><label class="ck"><input type="checkbox" id="anim-red"> Reducir animaciones</label><p>Desactiva los fundidos entre pestañas, el temblor de la aguja y los efectos al pasar el cursor.</p></div>
+ <div class="cd" style="margin-top:14px"><h2>Alertas sonoras</h2><label class="ck"><input type="checkbox" id="al-on" checked> Avisar con sonido cuando los frenos se calienten</label><p>Fading: un «bip» lento que se acelera conforme sube el calor. Sin frenos: cuatro pitidos cortos cada pocos segundos.</p><div class="ax"><span>Volumen</span><input type="range" id="al-vol" min="0" max="100" step="5" value="80"><em id="al-vv">80 %</em></div><div class="bg"><button class="bt" id="al-p1">Probar fading</button><button class="bt" id="al-p2">Probar sin frenos</button></div></div></section>
+<section class="vw" id="v-calibracion"><div class="hd"><h1>Calibración</h1><div class="chip" id="c-cal"><i></i><span>Apagado</span></div></div>
+<div class="cg">
+ <div class="cd L"><h2>Temperatura de frenos</h2><div class="gp"><div id="tg-j"></div><div id="tg-p"></div></div></div>
+ <div class="cd"><h2>Inclinación del terreno</h2>
+  <div class="pend off" id="pend"><svg viewBox="-60 -40 120 80"><line x1="-50" y1="25" x2="50" y2="25" stroke="#27344a" stroke-width="2" stroke-dasharray="4 4"/><g id="pg" style="transition:transform .12s"><line class="gd" x1="-48" y1="25" x2="48" y2="25"/><rect x="-16" y="8" width="32" height="12" rx="3" fill="#33425a"/><circle cx="-9" cy="22" r="4" fill="#1b2430" stroke="#8d9bb0"/><circle cx="9" cy="22" r="4" fill="#1b2430" stroke="#8d9bb0"/></g></svg>
+   <div><div class="nm" id="pn">-- %</div><small id="pa">Esperando al juego</small></div></div>
+  <div class="kv" style="margin-top:8px"><span>Ángulo</span><b id="pg2">--</b><span>Inclinación lateral</span><b id="pl">--</b><span>Aceleración del juego (z)</span><b id="pz">--</b></div>
+  <div class="apt" id="apt">El programa solo aprende en pendientes menores al 4 %.</div></div>
+ <div class="cd"><h2>Controles en vivo</h2>
+  <div class="ax"><span>Volante</span><div class="sgm" id="cb-vol" style="--c:#4cc9f0"></div><em id="cp-vol">0</em></div>
+  <div class="ax"><span>Acelerador</span><div class="sgm" id="cb-ace" style="--c:#4ade80"></div><em id="cp-ace">0</em></div>
+  <div class="ax"><span>Freno</span><div class="sgm" id="cb-fre" style="--c:#ff6b5e"></div><em id="cp-fre">0</em></div></div>
+ <div class="cd"><h2>Prueba de frenado de 100 a 0 km/h</h2>
+  <label class="ck"><input type="checkbox" id="cal-on"> Activar el modo de calibración</label>
+  <p id="cal-n" style="color:var(--am)"></p><p id="cal-d">Graba cada frenada que hagas desde 100 km/h hasta detenerte.</p>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="bt" id="cal-f">Abrir carpeta de pruebas</button>
+  <details><summary>Cómo se hace</summary><ol><li>Activa el modo y busca un tramo recto y plano.</li><li>Acelera hasta 100 km/h.</li><li>Frena con la intensidad que quieras probar, hasta parar del todo.</li><li>La prueba se guarda sola.</li></ol><p>Se descarta si la velocidad vuelve a subir, si pausas el juego o si sueltas el pedal más de 2 segundos.</p></details></div></div>
+ <div class="cd"><h2>Registro continuo</h2>
+  <label class="ck"><input type="checkbox" id="reg-on"> Grabar el registro continuo</label>
+  <p id="reg-d">Graba cada 0,5 s la velocidad, el pedal, las temperaturas, la eficacia y la pendiente, sin límite de tiempo. Sirve para medir el enfriamiento y las bajadas largas. Si cambias la etiqueta mientras graba, el archivo no se parte.</p>
+  <p id="reg-n" style="color:var(--am)"></p></div>
+ <div class="cd"><h2>Preparar la prueba</h2>
+  <label class="lb" for="cal-ti">Temperatura inicial del programa (°C)</label>
+  <div class="rw2"><input type="number" id="cal-ti" value="25" min="25" max="450" step="5"><button class="bt" id="cal-ta">Aplicar</button><button class="bt" id="cal-t25" style="border-color:var(--am)">25 °C</button></div>
+  <label class="lb">Tope del pedal de freno</label>
+  <div class="tp" id="cal-tope"><button class="bt" data-tope="0.25">25 %</button><button class="bt" data-tope="0.5">50 %</button><button class="bt" data-tope="0.75">75 %</button><button class="bt on" data-tope="1">Sin límite</button></div>
+  <label class="ck" style="margin:10px 0 0;font-size:13px" title="Recomendado con el mod en max_brake_temperature alto. Si lo apagas, el frenado depende solo del mod."><input type="checkbox" id="cal-fp" checked> Limitar la fuerza de frenado según la carga</label>
+  <label class="lb" for="cal-e">Etiqueta opcional (se añade sola la temp. del juego)</label>
+  <input type="text" id="cal-e" placeholder="Ej.: 35t_remolque2" maxlength="40"></div>
+ <div class="cd"><h2>Última prueba guardada</h2><div id="cal-u"><p>Todavía no hay ninguna.</p></div></div>
+</div></section>
+<section class="vw" id="v-diag"><div class="hd"><h1>Diagnóstico</h1><button class="bt" id="dcp">Copiar informe</button><button class="bt" id="rd">Revisar todo</button></div><div class="dsum" id="dsum"></div><div class="cd" id="dgl"></div></section>
+<section class="vw" id="v-acerca"><div class="hd"><h1>Acerca de</h1></div>
+ <div class="cd"><h2>Termofreno: frenos térmicos para ETS2 y ATS</h2><p>Simulación realista de la temperatura de los frenos: el calor sale de la energía real de cada frenada, los tambores se enfrían según su masa y la velocidad, y la eficacia baja con el calor (fading).</p><p>Hecho por El Flacooo.</p><button class="bt" id="wz-re">Ver el asistente de primera vez</button></div>
+ <div class="cd" style="margin-top:14px"><h2>Agradecimientos especiales</h2><p>Este proyecto no sería posible sin el trabajo que estas dos personas compartieron con la comunidad.</p>
+  <p><b>Funbit</b> creó el servidor de telemetría de ETS2 y ATS, que nos entrega los datos del juego. Puedes ver el proyecto oficial en <a data-open="https://github.com/Funbit/ets2-telemetry-server">GitHub</a>.</p>
+  <p><b>shauleiz</b> creó vJoy, el joystick virtual que permite controlar los frenos dentro del juego. Puedes ver el proyecto oficial en <a data-open="https://github.com/shauleiz/vJoy">GitHub</a>.</p></div></section>
+</main>
+<div class="md" id="md"><div class="mb"><h3 id="mt"></h3><p>Escanea con la cámara de tu dispositivo</p><div class="qb" id="qb"></div><code id="mu"></code>
+ <div class="bg"><button class="bt" id="mc">Copiar enlace</button><button class="bt" id="mo">Abrir aquí</button></div><button class="bt" id="mx" style="width:100%">Cerrar</button></div></div>
+<div class="wz" id="wz"><div class="wzc"><h3>Bienvenido a Termofreno</h3><small id="wzt"></small><div class="wzd" id="wzd"></div><div class="wzb" id="wzb"></div>
+ <div class="wzf"><a id="wzs">Omitir</a><span class="sp"></span><button class="bt" id="wzp">Atrás</button><button class="bt pr" id="wzn">Siguiente</button></div></div></div>
+<script>
+try{const t=localStorage.getItem('tema');if(t)document.documentElement.dataset.tema=t}catch(e){}
+const $=i=>document.getElementById(i),$$=s=>[...document.querySelectorAll(s)];
+// Vista previa en navegador (si no hay pywebview): datos de ejemplo
+const MOCK={t:0,async puerto(){return{puerto:8080,aviso:'',error:''}},async cambiar_puerto(p){p=+p;return p>=1024&&p<=65535?{ok:true,puerto:p}:{ok:false,error:'Escribe un número entre 1024 y 65535.'}},async enlaces_obs(){return[['Barra superior','http://127.0.0.1:8080/obs_top'],['Barra inferior','http://127.0.0.1:8080/obs_bottom'],['Overlay de video (horizontal)','http://127.0.0.1:8080/video?fondo=transparente']]},async estado(){this.t+=.05;return{juego:true,pausado:false,vjoy:true,web:true,temp:60+(Math.sin(this.t)+1)*110,vel:62,efic:1,tmax:450,tfade:260}},
+ async config(){return{device_id:0,tipo:'volante',invertir_acel:true,calor:.078,enf:.002,frenado_programa:true}},async guardar(){return true},
+ async dispositivos(){return[{id:0,nombre:'Volante de ejemplo (ID 0)'}]},async ejes(){const s=Math.sin(this.t*3);return{vol:.5+s*.4,acel:Math.max(0,s),freno:Math.max(0,-s)}},
+ async qr(d){let g='';for(let i=0;i<441;i++){const x=i%21,y=(i/21)|0;if((x<7&&y<7)||(x>13&&y<7)||(x<7&&y>13)||(x*7+y*13+x*y)%5<2)g+=`<rect x="${x}" y="${y}" width="1" height="1"/>`}
+  return{url:'http://192.168.1.20:8080'+(d==='panel'?'/panel':'/'),svg:`<svg viewBox="0 0 21 21" fill="#101620">${g}</svg>`}},
+ async inclinacion(){return{ok:true,grados:3*Math.sin(this.t*2),lateral:.8,acc_z:-1.2,limite_pct:4}},async abrir(){return true},async reiniciar_controles(){return{ok:true}},async calibracion(){return{tope:this.tope,activo:true,temp:142+Math.sin(this.t)*40,temp_juego:120+Math.sin(this.t)*80,tmax:450,tfade:260,etiqueta:'C_35t_T250_base',estado:'listo',detalle:'Ya vas a 100 km/h. Frena cuando quieras: se graba hasta llegar a 0.',ultima:{tiempo_s:7.34,vel_inicial_kmh:100,distancia_m:97,decel_media_ms2:3.78,pedal_medio:1,carga_t:56,temp_ini_c:25,temp_fin_c:143,archivo:'prueba_ejemplo.csv'}}},async calibracion_activar(){return true},async fijar_temperatura(v){return{ok:true,temp:v}},async fijar_tope_freno(v){this.tope=v;return{ok:true,tope:v}},tope:1,async calibracion_etiqueta(t){return t},async abrir_carpeta(){return true},async registro(){return{activo:true,manual:true,filas:240,archivo:'registro_ejemplo.csv'}},async registro_activar(){return true},async diagnostico(){return[{nombre:'Juego (telemetría)',ok:true,detalle:'Conectado'},{nombre:'vJoy',ok:true,detalle:'Listo'},{nombre:'Servidor web',ok:true,detalle:'Puerto 8080 activo'},{nombre:'Dispositivo',ok:true,detalle:'1 detectado'},{nombre:'Memoria térmica',ok:true,detalle:'153 recuerdos'}]}};
+const call=async(m,...a)=>{try{return await window.pywebview.api[m](...a)}catch(e){return null}};
+let vista='inicio',dev=0,tipo='volante',inv=false,cfg={calor:.078,enf:.002};
+// navegación
+$$('.nv').forEach(b=>b.onclick=()=>{$$('.nv,.vw').forEach(x=>x.classList.remove('on'));b.classList.add('on');vista=b.dataset.v;document.querySelector('main').classList.toggle('tight',vista==='calibracion');$('v-'+vista).classList.add('on');if(vista==='diag')diag()});
+// indicador de temperatura
+function chip(id,ok,txt,wa){const c=$(id);c.className='chip '+(ok?'ok':wa?'wa':'');c.lastChild.textContent=txt}
+function pintar(e){
+ chip('c-juego',e.juego&&!e.pausado,e.juego?(e.pausado?'Juego en pausa':'Juego conectado'):'Esperando al juego',!e.juego||e.pausado);
+ chip('c-vjoy',e.vjoy,e.vjoy?'vJoy listo':'vJoy no encontrado');chip('c-web',e.web,e.web?'Panel web activo':'Panel web caído');
+ const T=+e.temp||25,col=T>=e.tmax?'var(--rd)':T>e.tfade?'var(--am)':'var(--ok)';
+ dialSet($('gs').firstChild,T,25,e.tmax,e.tfade,T>=e.tmax?'Frenos sin efecto':T>e.tfade?'Fading: usa el motor':'Frenos en rango normal',col);
+ $('t-fa').classList.toggle('on',T>e.tfade&&T<e.tmax);$('t-li').classList.toggle('on',T>=e.tmax);
+ $('sv').textContent=Math.round(e.vel)+' km/h';$('se').textContent=Math.round(e.efic*100)+' %'}
+// barras segmentadas de la prueba
+['b-vol','b-ace','b-fre','cb-vol','cb-ace','cb-fre'].forEach(id=>$(id).innerHTML='<i></i>'.repeat(24));
+function barra(id,pid,v){$(pid).textContent=Math.round(v*100);[...$(id).children].forEach((s,i)=>s.classList.toggle('on',(i+.5)/24<=v))}
+async function bucle(){const e=await call('estado');if(e)pintar(e);setTimeout(bucle,250)}
+// la prueba en vivo tiene su propio bucle, sin esperar a nada más (~60 lecturas por segundo)
+async function bucleEjes(){
+ if(vista==='dispositivo'||vista==='calibracion'){const x=await call('ejes',dev,tipo,inv),q=vista==='calibracion'?'c':'';if(x){barra(q?'cb-vol':'b-vol',q?'cp-vol':'p-vol',x.vol);barra(q?'cb-ace':'b-ace',q?'cp-ace':'p-ace',x.acel);barra(q?'cb-fre':'b-fre',q?'cp-fre':'p-fre',x.freno)}setTimeout(bucleEjes,8)}
+ else setTimeout(bucleEjes,150)}
+$('rv').onclick=async()=>{const b=$('rv');b.textContent='Reiniciando...';const r=await call('reiniciar_controles');
+ b.textContent=r&&r.ok?'Controles reiniciados':'No se pudo reiniciar';setTimeout(()=>b.textContent='Reiniciar controles (vJoy)',2200)};
+// guardar ajustes
+let gt;const guardar=p=>{Object.assign(cfg,p);clearTimeout(gt);gt=setTimeout(()=>call('guardar',p),250)};
+$('dev').onchange=()=>{dev=+$('dev').value;guardar({device_id:dev})};
+$('inv').onchange=()=>{inv=$('inv').checked;guardar({invertir_acel:inv})};
+$('al-on').onchange=()=>guardar({alertas_sonoras:$('al-on').checked});$('al-vol').oninput=()=>{$('al-vv').textContent=$('al-vol').value+' %'};$('al-vol').onchange=()=>{guardar({volumen_alertas:+$('al-vol').value});setTimeout(()=>call('probar_alerta',1),400)};$('al-p1').onclick=()=>call('probar_alerta',1);$('al-p2').onclick=()=>call('probar_alerta',2);
+$$('[data-t]').forEach(b=>b.onclick=()=>{tipo=b.dataset.t;$$('[data-t]').forEach(x=>x.classList.toggle('on',x===b));guardar({tipo})});
+// deslizadores con perilla que cambia de forma
+const IC={llama:'<svg viewBox="-12 -14 24 28"><path d="M0-13C4-6 8-1 8 5c0 5-3 8-8 8s-8-3-8-8c0-3 1-5 3-7 1 2 2 3 3 3 0-4-1-8 2-14z" fill="#ffb02e" stroke="#fff1b8"/><path d="M0 2c2 3 3 5 2 8-1 1-3 1-4 0-1-3 1-5 2-8z" fill="#fff3b0"/></svg>',
+ copo:'<svg viewBox="-12 -12 24 24" stroke="#eaf7ff" stroke-width="2" stroke-linecap="round" fill="none"><path d="M0-11V11M-9.5-5.5l19 11M-9.5 5.5l19-11M-3-8L0-5l3-3M-3 8L0 5l3 3"/></svg>',
+ trailer:'<svg viewBox="-16 -10 32 20"><rect x="-15" y="-9" width="18" height="12" fill="#f1f5f9" stroke="#cbd5e1"/><path d="M5-4h6l4 5v3H5z" fill="#ffb347" stroke="#b36b00"/><g fill="#1b2430" stroke="#cbd5e1"><circle cx="-10" cy="6" r="3"/><circle cx="-3" cy="6" r="3"/><circle cx="10" cy="6" r="3"/></g></svg>'};
+function slider(id,did,min,max,def,hotRight,txt,cb){const el=$(id),th=el.querySelector('.th');let p=0;const val=()=>min*Math.pow(max/min,p);
+ function draw(){const k=val()/def,st=(k>=.7&&k<=1.4)?'trailer':((k>1.4)===hotRight?'llama':'copo');th.style.left=(p*100)+'%';th.className='th '+st;th.innerHTML=IC[st];$(did).textContent='×'+k.toFixed(2)+' · '+txt[st]}
+ const mv=e=>{const r=el.getBoundingClientRect();p=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));draw();cb(val())};
+ el.onpointerdown=e=>{el.setPointerCapture(e.pointerId);mv(e);el.onpointermove=mv};el.onpointerup=()=>{el.onpointermove=null};
+ return{set(v){p=Math.max(0,Math.min(1,Math.log(v/min)/Math.log(max/min)));draw()}}}
+const sc=slider('s-c','d-c',.001,.8,.078,true,{llama:'Se calientan más rápido',copo:'Se calientan más lento',trailer:'Valor realista'},v=>{guardar({calor:v});marcar()});
+const se=slider('s-e','d-e',.0001,.05,.002,false,{llama:'Tardan más en enfriarse',copo:'Se enfrían más rápido',trailer:'Valor realista'},v=>{guardar({enf:v});marcar()});
+function marcar(){$$('.p').forEach(p=>p.classList.toggle('on',Math.abs(cfg.calor/+p.dataset.c-1)<.06&&Math.abs(cfg.enf/+p.dataset.e-1)<.06))}
+$$('.p').forEach(p=>p.onclick=()=>{sc.set(+p.dataset.c);se.set(+p.dataset.e);guardar({calor:+p.dataset.c,enf:+p.dataset.e});marcar()});
+// diagnóstico
+const CI={ok:'<svg class="ci ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-7"/></svg>',bad:'<svg class="ci bad" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></svg>',inf:'<svg class="ci inf" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 11v5M12 7.8h.01"/></svg>'};
+// que hacer cuando una revision falla (btn: [texto, url] abre enlace · [texto, '#vista'] cambia de pestaña)
+const SOL={
+ 'Juego (telemetría)':{pasos:['Abre Euro Truck Simulator 2 o American Truck Simulator y entra a una partida (el menú principal no basta).','Comprueba que el plugin del servidor de telemetría de Funbit está instalado en la carpeta del juego.','Si abriste el juego antes que este programa, pulsa «Volver a revisar».','Si sigue sin conectar, ejecuta el juego y este programa como administrador.'],btn:[['Servidor de telemetría (GitHub)','https://github.com/Funbit/ets2-telemetry-server']]},
+ 'vJoy':{pasos:['Instala vJoy si no lo tienes y reinicia el equipo.','Abre «Configure vJoy», elige el dispositivo 1 y activa los ejes X, Y y Z.','Pulsa «Apply» y luego «Volver a revisar». Cierra otros programas que estén usando vJoy.'],btn:[['Descargar vJoy (GitHub)','https://github.com/shauleiz/vJoy']]},
+ 'Servidor web':{pasos:['Cierra otras copias de este programa. Si otro programa usa el puerto, cámbialo en Inicio › «Puerto del panel web».','Si Windows pregunta por el cortafuegos, pulsa «Permitir acceso».','Reinicia el programa y vuelve a revisar.']},
+ 'Volante o mando':{pasos:['Conecta el volante o los pedales por USB y prueba otro puerto si no aparece.','Cierra otros programas que lo estén usando.','Ve a la pestaña Dispositivo y elígelo en la lista.'],btn:[['Ir a Dispositivo','#dispositivo']]},
+ 'Memoria térmica':{pasos:['No es un error: la memoria se crea sola después de unos minutos conduciendo con el programa abierto.']}
+};
+const LEVE=['Memoria térmica'];       // avisos amarillos, no cuentan como fallo
+const SIN_AVISO=['Juego (telemetría)']; // normal al arrancar: no activan el punto rojo ni abren el asistente
+let ultimoDiag=[];
+const clase=x=>x.ok?'ok':LEVE.includes(x.nombre)?'inf':'bad';
+function pintarAviso(l){const m=l.filter(x=>clase(x)==='bad'&&!SIN_AVISO.includes(x.nombre)).length;$$('.nv[data-v=diag]').forEach(b=>b.classList.toggle('al',m>0));return m}
+async function diag(){
+ const l=await call('diagnostico')||[];ultimoDiag=l;pintarAviso(l);
+ const bad=l.filter(x=>clase(x)==='bad').length,inf=l.filter(x=>clase(x)==='inf').length,ok=l.filter(x=>x.ok).length;
+ const k=bad?'bad':inf?'inf':'ok';
+ $('dsum').className='dsum '+k;
+ $('dsum').innerHTML=CI[k]+`<div><b>${bad?(bad===1?'1 cosa necesita atención':bad+' cosas necesitan atención'):inf?'Todo listo (con un aviso)':'Todo listo para conducir'}</b><small>${ok} de ${l.length} revisiones correctas${bad?' · mira abajo qué hacer':''}</small></div>`;
+ $('dgl').innerHTML=l.map((x,i)=>{const c=clase(x),sol=SOL[x.nombre];
+  const caja=!x.ok&&sol?`<div class="sol"><h4>${c==='inf'?'Para que lo sepas':'Qué hacer'}</h4><ol>${sol.pasos.map(t=>'<li>'+t+'</li>').join('')}</ol><div class="bg">${(sol.btn||[]).map(([t,u],j)=>`<button class="bt" data-i="${i}" data-j="${j}">${t}</button>`).join('')}${c==='bad'?'<button class="bt" data-re="1">Volver a revisar</button>':''}</div></div>`:'';
+  return `<div class="dr ${c}"><div class="dh">${CI[c]}<div><b>${x.nombre}</b><small>${x.detalle}</small></div></div>${caja}</div>`}).join('');
+ $$('#dgl [data-re]').forEach(b=>b.onclick=diag);
+ $$('#dgl [data-j]').forEach(b=>b.onclick=()=>{const u=SOL[l[+b.dataset.i].nombre].btn[+b.dataset.j][1];if(u[0]==='#')document.querySelector('.nv[data-v='+u.slice(1)+']').click();else call('abrir',u)});
+}
+$('rd').onclick=diag;
+$('dcp').onclick=async()=>{if(!ultimoDiag.length)await diag();const t='Termofreno · informe de diagnóstico\n'+new Date().toLocaleString()+'\n\n'+ultimoDiag.map(x=>`[${x.ok?'OK':LEVE.includes(x.nombre)?'AVISO':'FALLA'}] ${x.nombre}: ${x.detalle}`).join('\n');try{await navigator.clipboard.writeText(t)}catch(e){}const b=$('dcp'),o=b.textContent;b.textContent='¡Copiado!';setTimeout(()=>b.textContent=o,1200)};
+
+// ===== modo dia / noche =====
+const I_SOL='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2.5 12h2M19.5 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></svg>',
+ I_LUNA='<svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>';
+function setTema(t){const d=t==='dia';document.documentElement.dataset.tema=d?'dia':'noche';$('tmb').innerHTML=(d?I_LUNA:I_SOL)+'<span>'+(d?'Modo noche':'Modo día')+'</span>';try{localStorage.setItem('tema',d?'dia':'noche')}catch(e){}}
+$('tmb').onclick=()=>{const n=document.documentElement.dataset.tema==='dia'?'noche':'dia';setTema(n);guardar({tema:n})};
+setTema(document.documentElement.dataset.tema||'noche');
+// ===== asistente de primera vez =====
+let wzP=0,wzOn=false,wzLoopOn=false;
+const WZ_T=['Tu volante o pedales','vJoy y el juego','Prueba tus pedales'];
+function wzAbrir(){wzP=0;wzOn=true;$('wz').classList.add('on');wzRender()}
+function wzCerrar(){wzOn=false;$('wz').classList.remove('on');guardar({asistente_visto:true})}
+async function wzLoop(){if(wzLoopOn)return;wzLoopOn=true;
+ while(wzOn&&wzP===2){const x=await call('ejes',dev,tipo,inv);if(x&&$('wb-vol')){barra('wb-vol','wp-vol',x.vol);barra('wb-ace','wp-ace',x.acel);barra('wb-fre','wp-fre',x.freno)}await new Promise(r=>setTimeout(r,16))}
+ wzLoopOn=false}
+async function wzRender(){
+ const b=$('wzb'),p=wzP;
+ $('wzd').innerHTML=WZ_T.map((t,i)=>`<i class="${i===p?'on':i<p?'ok':''}"></i>`).join('');
+ $('wzt').textContent='Paso '+(p+1)+' de 3 · '+WZ_T[p];
+ $('wzn').textContent=p===2?'Terminar':'Siguiente';$('wzp').style.visibility=p?'visible':'hidden';$('wzs').style.visibility=p===2?'hidden':'visible';
+ if(p===0){
+  const ds=await call('dispositivos')||[];if(wzP!==0)return;
+  b.innerHTML=`<p>Elige el volante, los pedales o el mando con el que vas a jugar.</p>`+(ds.length?`<select id="wdev">${ds.map(d=>`<option value="${d.id}">${d.nombre}</option>`).join('')}</select>`:`<p class="sol" style="padding:12px 14px">No veo ningún dispositivo. Conéctalo por USB (prueba otro puerto) y pulsa «Buscar de nuevo».</p>`)+
+   `<div class="sg"><button class="bt${tipo==='volante'?' on':''}" data-wt="volante">Volante</button><button class="bt${tipo==='mando'?' on':''}" data-wt="mando">Mando (gamepad)</button></div><button class="bt" id="wre">Buscar de nuevo</button>`;
+  if($('wdev')){$('wdev').value=dev;$('wdev').onchange=()=>{dev=+$('wdev').value;$('dev').value=dev;guardar({device_id:dev})}}
+  $$('[data-wt]').forEach(x=>x.onclick=()=>{tipo=x.dataset.wt;$$('[data-wt]').forEach(y=>y.classList.toggle('on',y===x));$$('[data-t]').forEach(y=>y.classList.toggle('on',y.dataset.t===tipo));guardar({tipo})});
+  $('wre').onclick=wzRender;
+ }else if(p===1){
+  b.innerHTML='<p>Comprobando…</p>';const l=await call('diagnostico')||[];if(wzP!==1)return;ultimoDiag=l;pintarAviso(l);
+  const fila=n=>{const x=l.find(y=>y.nombre===n);if(!x)return'';const juego=n==='Juego (telemetría)',c=juego&&!x.ok?'inf':clase(x),sol=SOL[n];
+   return `<div class="dr ${c}"><div class="dh">${CI[c]}<div><b>${n}</b><small>${juego&&!x.ok?'Aún no hace falta: se conectará solo cuando abras el juego.':x.detalle}</small></div></div>${c==='bad'&&sol?`<div class="sol"><h4>Qué hacer</h4><ol>${sol.pasos.map(t=>'<li>'+t+'</li>').join('')}</ol><div class="bg">${(sol.btn||[]).filter(q=>q[1][0]!=='#').map(q=>`<button class="bt" data-u="${q[1]}">${q[0]}</button>`).join('')}</div></div>`:''}</div>`};
+  b.innerHTML=`<p>Termofreno necesita vJoy para controlar los frenos en el juego.</p>`+['vJoy','Servidor web','Juego (telemetría)'].map(fila).join('')+`<button class="bt" id="wrc" style="margin-top:10px">Volver a revisar</button>`;
+  $$('#wzb [data-u]').forEach(x=>x.onclick=()=>call('abrir',x.dataset.u));$('wrc').onclick=wzRender;
+ }else{
+  b.innerHTML=`<p>Mueve el volante y pisa los pedales: las barras deben responder. Así sabes que todo está bien conectado.</p>
+   <div class="ax"><span>Volante</span><div class="sgm" id="wb-vol" style="--c:#4cc9f0"></div><em id="wp-vol">0</em></div>
+   <div class="ax"><span>Acelerador</span><div class="sgm" id="wb-ace" style="--c:#4ade80"></div><em id="wp-ace">0</em></div>
+   <div class="ax"><span>Freno</span><div class="sgm" id="wb-fre" style="--c:#ff6b5e"></div><em id="wp-fre">0</em></div>
+   <label class="ck" style="margin-top:12px"><input type="checkbox" id="winv"> Invertir el acelerador</label><p class="nota">Actívalo si el acelerador marca 100 % con el pedal suelto.</p>`;
+  ['wb-vol','wb-ace','wb-fre'].forEach(id=>$(id).innerHTML='<i></i>'.repeat(24));
+  $('winv').checked=inv;$('winv').onchange=()=>{inv=$('winv').checked;$('inv').checked=inv;guardar({invertir_acel:inv})};wzLoop();
+ }}
+$('wzn').onclick=()=>{if(wzP===2){wzCerrar();return}wzP++;wzRender()};
+$('wzp').onclick=()=>{if(wzP>0){wzP--;wzRender()}};
+$('wzs').onclick=wzCerrar;
+$('wz-re').onclick=wzAbrir;
+// mini ventana y animaciones
+$('bmini').onclick=async()=>{const r=await call('abrir_mini'),n=$('nmini');if(r&&r.ok===false){n.innerHTML='⚠️ '+r.error;n.style.color='var(--am)'}};
+const setAnim=v=>{document.documentElement.classList.toggle('sa',!!v);$('anim-red').checked=!!v};
+$('anim-red').onchange=()=>{setAnim($('anim-red').checked);guardar({reducir_anim:$('anim-red').checked})};
+// al arrancar: si falla algo importante, abre el diagnostico (una sola vez) y deja el punto rojo
+setTimeout(async()=>{const l=await call('diagnostico')||[];ultimoDiag=l;if(pintarAviso(l)>0&&vista==='inicio'&&!wzOn)document.querySelector('.nv[data-v=diag]').click()},3200);
+setInterval(async()=>{const l=await call('diagnostico');if(l){ultimoDiag=l;pintarAviso(l)}},60000);
+// enlaces de OBS y códigos QR
+const copiarObsBase=[['Barra superior','http://127.0.0.1:8080/obs_top'],['Barra inferior','http://127.0.0.1:8080/obs_bottom']];
+async function pintarObs(){const l=(await call('enlaces_obs'))||copiarObsBase;
+ $('obs').innerHTML=l.map(([n,u])=>`<div class="rw"><span>${n}</span><code>${u.replace('http://','')}</code><button class="bt" data-u="${u}">Copiar</button></div>`).join('');
+ $('obs').querySelectorAll('[data-u]').forEach(b=>b.onclick=()=>copiar(b.dataset.u,b))}
+async function pintarPuerto(){const r=await call('puerto');if(!r)return;$('pt-in').value=r.puerto;const n=$('pt-n');n.classList.toggle('er',!!(r.aviso||r.error));n.textContent=r.error||r.aviso||('Ahora usa el puerto '+r.puerto+'.')}
+$('pt-ok').onclick=async()=>{const n=$('pt-n'),b=$('pt-ok');b.disabled=true;const r=await call('cambiar_puerto',$('pt-in').value);b.disabled=false;
+ if(r&&r.ok){await pintarObs();await pintarPuerto();n.classList.remove('er');n.textContent='Listo: ahora usa el puerto '+r.puerto+'. Vuelve a escanear el QR y cambia la dirección en OBS.'}
+ else{n.classList.add('er');n.textContent=(r&&r.error)||'No se pudo cambiar el puerto.'}};
+const copiar=async(u,b)=>{try{await navigator.clipboard.writeText(u)}catch(e){}const t=b.textContent;b.textContent='¡Copiado!';setTimeout(()=>b.textContent=t,1200)};
+$$('[data-u]').forEach(b=>b.onclick=()=>copiar(b.dataset.u,b));
+let qurl='';
+$$('[data-qr]').forEach(b=>b.onclick=async()=>{const r=await call('qr',b.dataset.qr)||{url:'',svg:''};qurl=r.url;$('mt').textContent=b.dataset.qr==='panel'?'Panel de tablet':'Dashboard móvil';
+ $('qb').innerHTML=r.svg||'<em>Para ver el código QR instala el módulo:<br>pip install segno</em>';$('mu').textContent=r.url;$('md').classList.add('on')});
+$('mx').onclick=()=>$('md').classList.remove('on');$('md').onclick=e=>{if(e.target===$('md'))$('md').classList.remove('on')};
+$('mc').onclick=e=>copiar(qurl,e.target);$('mo').onclick=()=>call('abrir',qurl);
+$$('[data-open]').forEach(a=>a.onclick=()=>call('abrir',a.dataset.open));
+// Opción de desarrollador: oculta. Ctrl+Mayús+D la muestra u oculta (al ocultarla se apaga el modo de calibración)
+let modoDev=false;
+addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&!e.altKey&&e.code==='KeyD'){e.preventDefault();modoDev=!modoDev;
+ $('nv-cal').style.display=modoDev?'':'none';if(!modoDev){call('calibracion_activar',false);call('registro_activar',false);if(vista==='calibracion')$$('.nv')[0].click()}}});
+// calibración
+$('cal-on').onchange=()=>call('calibracion_activar',$('cal-on').checked);$('cal-f').onclick=()=>call('abrir_carpeta');
+$('reg-on').onchange=()=>call('registro_activar',$('reg-on').checked);
+function pintarReg(r){if(!r)return;if(document.activeElement!==$('reg-on'))$('reg-on').checked=!!r.manual;$('reg-n').textContent=r.activo?('Grabando: '+r.filas+' filas · '+(r.archivo||'')):''}
+$('cal-t25').onclick=()=>fijarT(25,$('cal-t25'));$('cal-ta').onclick=()=>fijarT(+$('cal-ti').value,$('cal-ta'));
+async function fijarT(v,b){const r=await call('fijar_temperatura',v),t=b.dataset.t||b.textContent;b.dataset.t=t;b.textContent=r&&r.ok?'Frenos a '+r.temp+' °C':((r&&r.motivo)||'Error');setTimeout(()=>b.textContent=t,1800)}
+$$('[data-tope]').forEach(b=>b.onclick=async()=>{const r=await call('fijar_tope_freno',+b.dataset.tope);if(r&&r.ok)marcarTope(r.tope)});
+function marcarTope(t){$$('[data-tope]').forEach(x=>x.classList.toggle('on',Math.abs(+x.dataset.tope-t)<.001))}
+$('cal-fp').onchange=()=>call('guardar',{frenado_programa:$('cal-fp').checked});
+$('cal-e').oninput=()=>call('calibracion_etiqueta',$('cal-e').value);
+function pintarCal(c){if(!c)return;if(c.tope!=null)marcarTope(c.tope);pintarTemps(c);if(document.activeElement!==$('cal-e')&&!$('cal-e').value&&c.etiqueta)$('cal-e').value=c.etiqueta;$('cal-on').checked=c.activo;
+ const M={apagado:[0,0,'Apagado'],esperando:[0,1,'Esperando 100 km/h'],listo:[1,0,'Listo: frena'],grabando:[1,0,'Grabando...'],guardada:[1,0,'Lista para la siguiente'],descartada:[0,1,'Descartada: lista otra vez']}[c.estado]||[0,0,c.estado];
+ chip('c-cal',M[0],M[2],M[1]);if(c.detalle)$('cal-d').textContent=c.detalle;$('cal-n').textContent=c.n?'Pruebas guardadas en esta sesión: '+c.n:'';
+ const u=c.ultima;if(u)$('cal-u').innerHTML='<div class="kv"><span>Tiempo 100→0</span><b>'+u.tiempo_s+' s</b><span>Distancia</span><b>'+u.distancia_m+' m</b><span>Decel. media</span><b>'+u.decel_media_ms2+' m/s²</b><span>Pedal medio</span><b>'+Math.round(u.pedal_medio*100)+' %</b><span>Carga</span><b>'+u.carga_t+' t</b><span>Frenos</span><b>'+Math.round(u.temp_ini_c)+'→'+Math.round(u.temp_fin_c)+' °C</b></div><p style="margin:6px 0 0;font-size:11px;word-break:break-all">'+(u.etiqueta?u.etiqueta+' · ':'')+u.archivo+'</p>'}
+async function calLoop(){if(vista==='calibracion'){pintarCal(await call('calibracion'));pintarReg(await call('registro'))}setTimeout(calLoop,350)}
+// medidores de temperatura de la calibración (mismo estilo que el de Inicio)
+function dialHTML(){let t='';for(let i=0;i<=8;i++){const a=(135+270*i/8)*Math.PI/180,c=Math.cos(a),n=Math.sin(a),m=i%2?55:50;t+=`<line x1="${100+60*c}" y1="${92+60*n}" x2="${100+m*c}" y2="${92+m*n}"/>`+(i%2?'':`<text x="${100+40*c}" y="${92+40*n}"></text>`)}
+ const P=g=>[100+70*Math.cos(g*Math.PI/180),92+70*Math.sin(g*Math.PI/180)].map(v=>v.toFixed(1)).join(' '),d='M'+P(135)+' A70 70 0 1 1 '+P(45);
+ return `<svg class="g dial" viewBox="0 0 200 184"><circle class="bz" cx="100" cy="92" r="88"/><circle class="bz2" cx="100" cy="92" r="82"/><g class="zn"><path d="${d}" pathLength="100"/><path d="${d}" pathLength="100"/><path d="${d}" pathLength="100"/></g><g class="tk">${t}</g><text class="tn" x="100" y="136">25°</text><text class="tl" x="100" y="152"></text><g class="nd"><g class="tm"><polygon points="97.5,92 100,26 102.5,92 101,106 99,106"/></g></g><circle class="hb" cx="100" cy="92" r="7"/></svg>`}
+function dialSet(s,T,min,max,tf,txt,col,ok=true){const r=max-min,f=ok?Math.max(0,Math.min(1,(T-min)/r)):0,a=Math.max(0,Math.min(1,(tf-min)/r)),m=a+(1-a)*.6,q=s.querySelectorAll('.zn path'),z=(e,x,y)=>e.setAttribute('stroke-dasharray','0 '+(x*100)+' '+((y-x)*100)+' 100');
+ z(q[0],0,a);z(q[1],a,m);z(q[2],m,1);s.querySelector('.nd').style.transform='rotate('+(-135+270*f)+'deg)';
+ s.querySelectorAll('.tk text').forEach((e,i)=>e.textContent=Math.round((min+r*i/4)/5)*5);s.style.setProperty('--z',col);s.style.opacity=ok?1:.45;
+ s.querySelector('.tn').textContent=ok?Math.round(T)+'°':'--';s.querySelector('.tl').textContent=txt;
+ const tr=ok&&f>=.85;s.classList.toggle('tre',tr);if(tr)s.style.setProperty('--amp',(.8+Math.min(1,(f-.85)/.15)*1.7).toFixed(2))}
+function medidor(host,titulo,sub){$(host).innerHTML='<div class="gtt">'+titulo+'<small>'+sub+'</small></div>'+dialHTML()}
+medidor('tg-j','Juego','temperatura que reporta el juego');medidor('tg-p','Programa','temperatura del modelo');$('gs').innerHTML=dialHTML();
+{const sp=$('spd');sp.innerHTML=dialHTML();const v=sp.firstChild;dialSet(v,25,25,450,260,'','var(--ok)');v.querySelector('.nd').style.animation='bar 1.7s cubic-bezier(.2,.8,.2,1) forwards';setTimeout(()=>$('spl').remove(),2500)}
+function pintarMedidor(host,T,min,max,color,txt,tf){const ok=T!=null&&!isNaN(T);dialSet($(host).querySelector('svg'),ok?T:min,min,max,tf==null?max:tf,txt,color,ok)}
+const JMAX=200;// el juego no reporta más de 200 °C: ahí la lectura se satura
+function subMedidor(host,ini,txt){const e=$(host).querySelector('small');if(e)e.textContent=ini!=null?'al frenar: '+Math.round(ini)+' °C':txt}
+function pintarTemps(c){subMedidor('tg-j',c.tj_ini,'temperatura que reporta el juego');subMedidor('tg-p',c.tp_ini,'temperatura del modelo');const j=c.temp_juego,tm=c.tmax||450,tf=c.tfade||260,T=c.temp;
+ pintarMedidor('tg-j',j,25,JMAX,j!=null&&j>=JMAX-.5?'var(--am)':'var(--ok)',j==null?'Sin datos del juego':(j>=JMAX-.5?'Tope de lectura (200°)':'Lectura del juego'));
+ pintarMedidor('tg-p',T,25,tm,T>=tm?'var(--rd)':T>tf?'var(--am)':'var(--ok)',T>=tm?'Frenos sin efecto':T>tf?'Fading: usa el motor':'Frenos en rango normal',tf)}
+// inclinación del terreno en tiempo real (la pendiente se suaviza un poco para que no tiemble)
+let pSuave=null;
+function pintarTerreno(t){const el=$('pend');
+ if(!t||!t.ok){pSuave=null;el.className='pend off';$('pn').textContent='-- %';$('pa').textContent='Esperando al juego';$('pg2').textContent=$('pl').textContent=$('pz').textContent='--';$('apt').className='apt no';$('apt').textContent='Sin datos del juego.';$('pg').style.transform='';return}
+ pSuave=pSuave===null?t.grados:pSuave+(t.grados-pSuave)*.35;const pend=Math.tan(pSuave*Math.PI/180)*100,ab=Math.abs(pend),ok=ab<t.limite_pct;
+ el.className='pend'+(ok?'':' mal');$('pg').style.transform='rotate('+(-Math.max(-35,Math.min(35,pSuave)))+'deg)';
+ $('pn').textContent=(pend>0?'+':'')+pend.toFixed(1)+' %';$('pa').textContent=ab<.5?'Terreno plano':(pend>0?'Subida':'Bajada');
+ $('pg2').textContent=pSuave.toFixed(1)+'°';$('pl').textContent=t.lateral==null?'--':t.lateral.toFixed(1)+'°';$('pz').textContent=t.acc_z==null?'--':t.acc_z.toFixed(2)+' m/s²';
+ $('apt').className='apt'+(ok?'':' no');$('apt').textContent=ok?'Pendiente apta: el programa puede aprender la fuerza de frenado.':'Pendiente mayor al '+t.limite_pct+' %: el programa no aprende en este tramo.'}
+async function bucleTerreno(){if(vista==='calibracion')pintarTerreno(await call('inclinacion'));setTimeout(bucleTerreno,100)}
+// arranque
+async function iniciar(){pintarObs();pintarPuerto();const c=await call('config');if(c){setAnim(c.reducir_anim);if(c.tema)setTema(c.tema);if(!c.asistente_visto)setTimeout(wzAbrir,2700);cfg=c;dev=c.device_id;tipo=c.tipo;inv=!!c.invertir_acel}
+ const ds=await call('dispositivos')||[];$('dev').innerHTML=ds.map(d=>`<option value="${d.id}">${d.nombre}</option>`).join('');$('dev').value=dev;$('cal-fp').checked=c?c.frenado_programa!==false:true;$('inv').checked=inv;$('al-on').checked=c?c.alertas_sonoras!==false:true;{const v=c&&c.volumen_alertas!=null?c.volumen_alertas:80;$('al-vol').value=v;$('al-vv').textContent=v+' %'}
+ $$('[data-t]').forEach(x=>x.classList.toggle('on',x.dataset.t===tipo));sc.set(cfg.calor);se.set(cfg.enf);marcar();bucle();bucleEjes();calLoop();bucleTerreno()}
+let listo=false;const go=()=>{if(!listo){listo=true;iniciar()}};
+window.addEventListener('pywebviewready',go);setTimeout(()=>{if(!window.pywebview){window.pywebview={api:MOCK};go()}},700);
+</script></body></html>

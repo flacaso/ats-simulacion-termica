@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="noche">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Termofreno - Panel minimalista</title>
+<style>
+:root{--bg:#10131a;--s1:#1a1f2a;--s2:#242b38;--tx:#e6e9ef;--mu:#8e97a8;--ln:#2b3342;--green:#5fd08b;--amber:#eeb857;--red:#ee6d6d;--blue:#74a9ff;--cyan:#5fd0e0;--sh:0 6px 16px rgba(0,0,0,.3);color-scheme:dark}
+:root[data-tema=dia]{--bg:#edf0f5;--s1:#fff;--s2:#e8ecf2;--tx:#1b2230;--mu:#5d6779;--ln:#d6dbe5;--green:#1c9a55;--amber:#b87408;--red:#d24444;--blue:#2d6ee0;--cyan:#0d8a9d;--sh:0 4px 12px rgba(30,40,60,.12);color-scheme:light}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:max(12px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left));touch-action:manipulation;transition:background .3s,color .3s}
+header{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:12px;margin-bottom:14px}.tl{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;align-items:center}#pz .b{--c:var(--red);min-height:60px;padding:10px 16px;width:max-content}
+.pill{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;background:var(--s1);border:1px solid var(--ln);font-weight:600;font-size:13px}
+.pill i{width:9px;height:9px;border-radius:50%;background:var(--c,var(--mu));box-shadow:0 0 8px var(--c,transparent)}
+.dat{display:flex;gap:clamp(12px,2.6vw,36px);align-items:center}
+.dat div{display:flex;flex-direction:column;align-items:center}
+.dat small{color:var(--mu);font-size:15px}
+.dat b{font-size:clamp(60px,10vw,116px);font-variant-numeric:tabular-nums;line-height:1.1}
+.ar{font-size:clamp(54px,8vw,100px);color:var(--mu);transition:color .15s}.ar.on{color:var(--amber)}
+.hb{all:unset;display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:var(--s1);border:1px solid var(--ln);color:var(--tx);cursor:pointer}
+.hb svg{width:22px;height:22px}
+svg{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+h2{font-size:13px;font-weight:600;color:var(--mu);margin:18px 4px 8px}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px}
+.b,.m{all:unset;box-sizing:border-box;cursor:pointer;transition:transform .08s,background .2s,box-shadow .2s}
+.b{display:flex;align-items:center;gap:12px;min-height:76px;padding:12px;border-radius:20px;background:var(--s1);border:1px solid var(--ln);box-shadow:var(--sh)}
+.b:active,.p{transform:scale(.96)}
+.ic{flex:none;width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:var(--s2);color:var(--mu);transition:.2s}
+.ic svg{width:23px;height:23px}
+.on .ic{color:var(--c);box-shadow:inset 0 0 0 2px var(--c),0 0 14px -3px var(--c)}
+.tt{display:block;font-weight:600}.sb{display:block;font-size:12px;color:var(--mu);margin-top:2px}
+.on .sb{color:var(--c)}
+.t{background:var(--s1);border:1px solid var(--ln);border-radius:20px;padding:12px;box-shadow:var(--sh);grid-column:span 2}
+.t .tt{margin:0 2px 8px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:8px}
+.m{display:grid;place-items:center;min-height:54px;border-radius:14px;background:var(--s2);font-weight:600;font-size:14px;text-align:center}
+.m:active,.m.p{background:var(--ln)}
+.fr{grid-column:span 2;padding:14px 16px;border-radius:20px;background:var(--s1);border:1px solid var(--ln);box-shadow:var(--sh);--c:var(--green)}
+.fr .n{font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--c)}
+.fr .sb{color:var(--c);font-weight:600}
+.bar{position:relative;height:8px;border-radius:9px;background:var(--s2);margin-top:10px;overflow:hidden}
+.bar u{position:absolute;inset:0 auto 0 0;width:0;background:var(--c);border-radius:9px;transition:width .3s,background .3s}
+.bar s{position:absolute;top:0;bottom:0;left:41.2%;width:2px;background:var(--tx);opacity:.45}
+.pips{display:inline-flex;gap:4px;margin-left:6px;vertical-align:middle}
+.pips i{width:6px;height:6px;border-radius:50%;background:var(--ln)}.pips i.a{background:var(--c)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v9"/><path d="M18.4 6.6a9 9 0 1 1-12.8 0"/></symbol>
+<symbol id="i-park" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 17V7h3a3 3 0 0 1 0 6h-3"/></symbol>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.3 19a10 10 0 1 1 17.4 0"/></symbol>
+<symbol id="i-horn" viewBox="0 0 24 24"><path d="M3 10v4h4l6 4V6L7 10z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></symbol>
+<symbol id="i-minus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></symbol>
+<symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6M10 22h4"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/></symbol>
+<symbol id="i-arrl" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></symbol>
+<symbol id="i-arrr" viewBox="0 0 24 24"><path d="m12 5 7 7-7 7M5 12h14"/></symbol>
+<symbol id="i-hazard" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+<symbol id="i-beacon" viewBox="0 0 24 24"><path d="M7 18a5 5 0 0 1 10 0M5 21h14M12 3v2M4.2 7.2l1.4 1.4M19.8 7.2l-1.4 1.4"/></symbol>
+<symbol id="i-wiper" viewBox="0 0 24 24"><path d="M3 18a9 9 0 0 1 18 0"/><path d="M12 18 7 9"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-lift" viewBox="0 0 24 24"><path d="m17 11-5-5-5 5M17 18l-5-5-5 5"/></symbol>
+<symbol id="i-cam" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></symbol>
+<symbol id="i-full" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+</defs></svg>
+
+<header>
+  <div id="pz"></div>
+  <div class="dat">
+    <span class="ar" id="il">◀</span>
+    <div><small>km/h</small><b id="vel">0</b></div>
+    <div><small>marcha</small><b id="gear">N</b></div>
+    <span class="ar" id="ir">▶</span>
+  </div>
+  <div class="tl"><div class="pill" id="st"><i></i><span>Conectando…</span></div><button class="hb" id="tema" title="Cambiar modo noche / día"></button>
+  <button class="hb" id="fs" title="Pantalla completa"><svg><use href="#i-full"/></svg></button></div>
+</header>
+<main id="app"></main>
+
+<script>
+/* ============ CONFIGURACIÓN: aquí agregas, quitas o cambias botones ============
+   t: título · k: tecla que se envía · i: icono · c: color (green amber red blue cyan)
+   on(e): cuándo se enciende (e = estado real del camión) · s(e): texto pequeño
+   hold: se mantiene mientras lo tocas · loc: interruptor local (el juego no lo reporta)
+   sub: grupo de botones [texto, tecla, mantener?]                                   */
+const NIVELES_LIMPIADORES = 3;   // pasos del limpiaparabrisas antes de apagarse
+const GRUPOS = [
+ ['Conducción', [
+  {t:'Ignición', k:'e', i:'power', c:'green', on:e=>e.motor, s:e=>e.motor?'Motor en marcha':'Motor apagado'},
+  {t:'Freno de mano', k:'space', i:'park', c:'red', on:e=>e.freno_mano, s:e=>e.freno_mano?'Puesto':'Suelto'},
+  {t:'Crucero', k:'c', i:'gauge', c:'green', on:e=>e.crucero, s:e=>e.crucero?'Activo':'Apagado'},
+  {t:'Bocina', k:'h', i:'horn', c:'amber', hold:1},
+  {t:'Retarder −', k:'j', i:'minus', c:'blue'},
+  {t:'Retarder +', k:';', i:'plus', c:'blue'}]],
+ ['Luces', [
+  {t:'Luces', k:'l', i:'bulb', c:'green', on:e=>e.luces>0, s:e=>['Apagadas','Cortesía','Bajas'][e.luces]},
+  {t:'Luces altas', k:'k', i:'sun', c:'blue', on:e=>e.altas},
+  {t:'Intermitente izq.', k:',', i:'arrl', c:'amber', on:e=>e.int_izq&&!e.hazards},
+  {t:'Intermitente der.', k:'.', i:'arrr', c:'amber', on:e=>e.int_der&&!e.hazards},
+  {t:'Emergencia', k:'f', i:'hazard', c:'amber', on:e=>e.hazards},
+  {t:'Torretas', k:'o', i:'beacon', c:'amber', on:e=>e.torretas},
+  {t:'Limpiadores', k:'p', i:'wiper', c:'cyan', wip:1}]],
+ ['Remolque y suspensión', [
+  {t:'Enganche remolque', k:'t', i:'link', c:'green', on:e=>e.remolque, s:e=>e.remolque?'Enganchado':'Sin remolque'},
+  {t:'Bloqueo diferencial', k:'v', i:'lock', c:'amber', loc:1},
+  {t:'Eje retráctil', k:'u', i:'lift', c:'blue', loc:1},
+  {t:'Suspensión del camión', sub:[['▲ Delantera','q',1],['▼ Delantera','a',1],['▲ Trasera','w',1],['▼ Trasera','s',1]]},
+  {t:'Suspensión del remolque', sub:[['▲ Subir','i',1],['▼ Bajar','d',1],['Reset','r']]}]],
+ ['Vista', [
+  {t:'Cámara interior', k:'1', i:'cam', c:'blue'},
+  {t:'Cámara exterior', k:'2', i:'cam', c:'blue'},
+  {t:'Mapa / GPS', k:'m', i:'map', c:'green'}]]
+];
+/* ================================================================================ */
+
+const $ = id => document.getElementById(id);
+const ic = n => `<svg><use href="#i-${n}"/></svg>`;
+const send = (p,k) => fetch('/'+p+'?key='+encodeURIComponent(k)).catch(()=>{});
+const buzz = () => { try { navigator.vibrate && navigator.vibrate(10); } catch(_){} };
+const ver = []; let E = {}, nivel = 0, hasta = 0;
+
+function mantener(el,k){
+  let iv = null;
+  const dn = ev => { ev.preventDefault(); if(iv) return; el.classList.add('p'); buzz(); send('down',k); iv = setInterval(()=>send('down',k),5000); };
+  const up = () => { if(!iv) return; clearInterval(iv); iv = null; el.classList.remove('p'); send('up',k); };
+  el.addEventListener('pointerdown',dn);
+  ['pointerup','pointercancel','pointerleave'].forEach(n=>el.addEventListener(n,up));
+  el.style.touchAction = 'none';
+}
+
+function construir(){
+  const app = $('app');
+  const pb = document.createElement('button'); pb.className = 'b'; pb.style.setProperty('--c','var(--red)');
+  pb.innerHTML = `<span class="ic">${ic('menu')}</span><span><span class="tt">Pausa</span></span>`;
+  pb.onclick = () => { buzz(); send('press','escape'); }; $('pz').appendChild(pb);
+  const fr = document.createElement('div');
+  fr.className = 'g'; fr.innerHTML = `<div class="fr" id="fr"><span class="tt">Temperatura de frenos</span>
+    <span class="n" id="tmp">25.0 °C</span> <span class="sb" id="tms">Óptimo</span>
+    <div class="bar"><u id="tmb"></u><s></s></div></div>`;
+  app.appendChild(fr);
+  for(const [nombre, lista] of GRUPOS){
+    const h = document.createElement('h2'); h.textContent = nombre; app.appendChild(h);
+    const g = document.createElement('div'); g.className = 'g'; app.appendChild(g);
+    for(const b of lista){
+      if(b.sub){
+        const t = document.createElement('div'); t.className = 't';
+        t.innerHTML = `<span class="tt">${b.t}</span><div class="row"></div>`;
+        for(const [txt,k,h] of b.sub){
+          const m = document.createElement('button'); m.className = 'm'; m.textContent = txt;
+          if(h) mantener(m,k); else m.onclick = () => { buzz(); send('press',k); };
+          t.lastChild.appendChild(m);
+        }
+        g.appendChild(t); continue;
+      }
+      const el = document.createElement('button'); el.className = 'b'; el.style.setProperty('--c',`var(--${b.c})`);
+      el.innerHTML = `<span class="ic">${ic(b.i)}</span><span><span class="tt">${b.t}</span><span class="sb"></span></span>`;
+      const sb = el.querySelector('.sb'); let local = false;
+      if(b.hold) mantener(el,b.k);
+      else el.onclick = () => {
+        buzz(); send('press',b.k);
+        if(b.loc){ local = !local; pintar(); }
+        if(b.wip){ nivel = (nivel+1) % (NIVELES_LIMPIADORES+1); hasta = Date.now()+900; pintar(); }
+      };
+      const pintar = () => {
+        let on = false, txt = '';
+        if(b.wip){ on = nivel>0; txt = on ? 'Nivel '+nivel+' de '+NIVELES_LIMPIADORES : 'Apagados'; }
+        else if(b.loc){ on = local; txt = on ? 'Activo' : 'Sin sensor del juego'; }
+        else if(b.on){ on = !!b.on(E); txt = b.s ? (b.s(E) || '') : ''; }
+        el.classList.toggle('on', on); sb.textContent = txt;
+      };
+      pintar(); ver.push(pintar); g.appendChild(el);
+    }
+  }
+}
+
+function estado(modo){
+  const [c,txt] = {on:['var(--green)','En línea'], wait:['var(--amber)','Esperando al juego'], pause:['var(--amber)','Juego en pausa'], off:['var(--red)','Servidor sin conexión']}[modo];
+  $('st').style.setProperty('--c',c); $('st').lastChild.textContent = txt;
+}
+
+function aplicar(d){
+  estado(!d.conectado ? 'wait' : d.pausado ? 'pause' : 'on');
+  $('vel').textContent = d.vel.toFixed(0); $('gear').textContent = d.gear;
+  const t = d.temp, f = $('fr');
+  $('tmp').textContent = t.toFixed(1)+' °C';
+  $('tmb').style.width = Math.max(2,Math.min(100,(t-25)/425*100))+'%';
+  const [col,txt] = t>=450 ? ['red','Cristalización'] : t>200 ? ['amber','Fading severo'] : ['green','Óptimo'];
+  f.style.setProperty('--c',`var(--${col})`); $('tms').textContent = txt;
+  if(d.conectado && d.est){
+    E = d.est;
+    if(Date.now() > hasta){ if(!E.limpiadores) nivel = 0; else if(nivel === 0) nivel = 1; }
+    $('il').classList.toggle('on',!!E.int_izq); $('ir').classList.toggle('on',!!E.int_der);
+    ver.forEach(f => f());
+  }
+}
+
+async function ciclo(){
+  try { aplicar(await (await fetch('/data',{cache:'no-store'})).json()); } catch(_){ estado('off'); }
+  setTimeout(ciclo,250);
+}
+
+function tema(t){
+  document.documentElement.dataset.tema = t;
+  $('tema').innerHTML = ic(t==='noche' ? 'sun' : 'moon');
+  try { localStorage.setItem('tema',t); } catch(_){}
+}
+$('tema').onclick = () => tema(document.documentElement.dataset.tema==='noche' ? 'dia' : 'noche');
+$('fs').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(()=>{});
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+let guardado = 'noche'; try { guardado = localStorage.getItem('tema') || 'noche'; } catch(_){}
+tema(guardado); construir(); ciclo();
+</script>
+</body>
+</html>

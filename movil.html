@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Termofreno - Monitor</title>
+<style>
+:root{--g:#2ee59d;--a:#ffb020;--r:#ff4b3e;--b:#5aa7ff;--mu:#8791a3;--k:1;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0;overflow:hidden;background:#0b0d12}
+/* #app se escala solo (ver script) hasta que todo cabe en pantalla */
+#app{width:calc(100% / var(--k));height:calc(100dvh / var(--k));transform:scale(var(--k));transform-origin:0 0;
+ color:#eef1f6;font:600 12px system-ui,sans-serif;
+ padding:max(6px,env(safe-area-inset-top)) 8px max(8px,env(safe-area-inset-bottom));
+ display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.top{flex:none;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--mu)}
+.top b{color:#eef1f6;font-size:13px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c,#666);box-shadow:0 0 8px var(--c);margin-right:6px}
+.hero{--c:var(--g);flex:none;text-align:center;padding:5px 10px 7px;border-radius:16px;background:linear-gradient(#171b24,#10131a);border:2px solid var(--c);box-shadow:0 0 20px -8px var(--c)}
+.hero small{color:var(--mu);letter-spacing:1.5px;text-transform:uppercase;font-size:10px}
+.hero .n{font-size:46px;font-weight:800;line-height:1;color:var(--c);font-variant-numeric:tabular-nums}
+.hero .s{color:var(--c);font-weight:800;font-size:12px;min-height:15px;margin-top:1px}
+.hero.p{animation:pp .6s infinite alternate}.hero.p .n{animation:lat .6s infinite}
+@keyframes pp{from{box-shadow:0 0 0 #f33}to{box-shadow:0 0 26px 3px #f33}}@keyframes lat{50%{transform:scale(1.08)}}
+.bar{position:relative;height:8px;border-radius:6px;margin-top:5px;overflow:hidden;background:linear-gradient(90deg,#2ee59d40 0 41.2%,#ffb02040 41.2% 70.6%,#ff4b3e40 70.6%)}
+.bar u{position:absolute;inset:0 auto 0 0;background:var(--c);transition:width .3s}
+.bar s{position:absolute;top:0;bottom:0;width:2px;background:#fff;opacity:.7}
+.big{flex:none;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.big div{background:#141821;border:1px solid #232a38;border-radius:14px;text-align:center;padding:3px 6px 4px}
+.big b{display:block;font-size:32px;line-height:1.1}
+.big small{color:var(--mu);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
+.tabs{flex:none;display:flex;gap:5px}
+.tabs button{all:unset;flex:1;text-align:center;padding:7px 0;border-radius:10px;background:#141821;border:1px solid #232a38;color:var(--mu);font-size:12px;cursor:pointer}
+.tabs button.on{background:var(--b);color:#06101f;border-color:var(--b)}
+.pg{display:none;flex:1 1 0;min-height:0;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:6px}.pg.on{display:grid}
+.c{background:#141821;border:1px solid #232a38;border-radius:12px;padding:3px 10px;min-width:0;display:flex;flex-direction:column;justify-content:center}.c.f{grid-column:span 2}
+.c small{display:block;color:var(--mu);font-size:9.5px;letter-spacing:1px;text-transform:uppercase;margin-bottom:1px}
+.c b{font-size:17px;color:var(--b);overflow-wrap:anywhere}
+.ok{color:var(--g)!important}.am{color:var(--a)!important}
+</style></head><body>
+<div id="app">
+<div class="top"><span><span class="dot" id="dt"></span><span id="cn">Conectando…</span></span><b id="tr">ATS</b></div>
+<div class="hero" id="h"><small>🔥 Temp. frenos · máx 450°</small><div class="n" id="tmp">25.0°</div><div class="s" id="ts">Óptimo</div>
+ <div class="bar"><u id="bu"></u><s style="left:41.2%"></s><s style="left:70.6%"></s></div></div>
+<div class="big"><div><small>km/h</small><b id="vel">0</b></div><div><small>marcha</small><b id="gear" class="am">N</b></div></div>
+<div class="tabs"><button class="on" data-t="0">📊 Telemetría</button><button data-t="1">📦 Trabajo</button><button data-t="2">🔧 Daños</button></div>
+<div class="pg on"><div class="c"><small>RPM</small><b id="rpm">0</b></div><div class="c"><small>Aire</small><b id="ai">0</b></div>
+ <div class="c"><small>Combustible</small><b id="co">0</b></div><div class="c"><small>Descanso</small><b id="rs" class="am">--</b></div>
+ <div class="c"><small>Freno motor</small><b id="mb">OFF</b></div><div class="c"><small>Retarder · Crucero</small><b id="rc">0 · OFF</b></div></div>
+<div class="pg"><div class="c f"><small>Carga</small><b id="ca" class="am">--</b></div><div class="c"><small>Ingreso</small><b id="pa" class="ok">$0</b></div><div class="c"><small>Tiempo límite</small><b id="ti" class="am">--</b></div>
+ <div class="c f"><small>Ruta</small><b id="ru">-- ➔ --</b></div><div class="c"><small>Faltan</small><b id="km">0 km</b></div><div class="c"><small>ETA</small><b id="eta">--</b></div></div>
+<div class="pg"><div class="c"><small>Motor</small><b id="w0"></b></div><div class="c"><small>Transmisión</small><b id="w1"></b></div><div class="c"><small>Chasis</small><b id="w2"></b></div>
+ <div class="c"><small>Neumáticos</small><b id="w3"></b></div><div class="c"><small>Remolque</small><b id="w4" class="am"></b></div><div class="c"><small>AdBlue</small><b id="ab"></b></div></div>
+</div>
+<script>
+const $=id=>document.getElementById(id),A=200,R=325,M=450,root=document.documentElement;
+let k=1;
+const overflow=()=>{const app=$('app'),pg=document.querySelector('.pg.on');
+ return app.scrollHeight>app.clientHeight+1||pg.scrollHeight>pg.clientHeight+1||app.scrollWidth>app.clientWidth+1};
+// Autoajuste: baja la escala solo si algo no cabe (nunca sube sola, salvo al reiniciar)
+function fit(reset){
+ if(reset){k=1;root.style.setProperty('--k',k)}
+ let n=0;while(overflow()&&k>0.5&&n++<30){k=Math.round((k-0.03)*100)/100;root.style.setProperty('--k',k)}
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.pg').forEach((p,i)=>p.classList.toggle('on',i==b.dataset.t));fit()});
+addEventListener('resize',()=>fit(true));addEventListener('load',()=>fit(true));
+const onoff=(e,v,t)=>{e.textContent=v?t:'OFF';e.className=v?'ok':''};
+setInterval(()=>fetch('/data').then(r=>r.json()).then(d=>{
+ $('dt').style.setProperty('--c',d.conectado?(d.pausado?'#ffb020':'#2ee59d'):'#ff4b3e');
+ $('cn').textContent=!d.conectado?'Esperando al juego':d.pausado?'Juego en pausa':'En línea';$('tr').textContent=d.marca+' '+d.modelo;
+ const t=d.temp,ef=Math.round(Math.max(0,1-(t-A)/(M-A))*100);
+ const [c,s]=t>=M?['#ff4b3e','¡CRISTALIZADO! SIN FRENOS']:t>=R?['#ff4b3e','¡PELIGRO! Eficacia '+ef+'%']:t>=A?['#ffb020','Fading · Eficacia '+ef+'%']:['#2ee59d','Sistema óptimo'];
+ $('h').style.setProperty('--c',c);$('h').classList.toggle('p',t>=R);$('tmp').textContent=t.toFixed(1)+'°';$('ts').textContent=s;
+ $('bu').style.width=Math.max(2,Math.min(100,(t-25)/(M-25)*100))+'%';
+ $('vel').textContent=d.vel.toFixed(0);$('gear').textContent=d.gear;$('rpm').textContent=d.rpm.toFixed(0);
+ $('ai').textContent=d.aire.toFixed(0)+' PSI';$('co').textContent=d.comb.toFixed(0)+' L';$('rs').textContent=d['sueño'];
+ onoff($('mb'),d.mb_on,'ON');$('rc').textContent=(d.retarder||0)+' · '+(d.cc_on?d.cc_speed.toFixed(0)+' km/h':'OFF');
+ $('ca').textContent=d.cargo;$('pa').textContent='$'+d.ingresos.toLocaleString();$('ti').textContent=d.t_restante;
+ $('ru').textContent=d.origen+' ➔ '+d.destino;$('km').textContent=d.dist_km.toFixed(1)+' km';$('eta').textContent=d.eta;
+ ['eng','tra','cha','whe','trl'].forEach((k,i)=>$('w'+i).textContent=d['w_'+k].toFixed(1)+'%');$('ab').textContent=d.adblue.toFixed(0)+' L';
+ fit();
+}).catch(()=>{$('cn').textContent='Servidor sin conexión'}),250);
+</script></body></html>

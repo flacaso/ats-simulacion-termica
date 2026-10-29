@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><title>Termofreno - Barra inferior</title>
+<style>
+:root{--u:min(1.7vw,2.7vh);--pn:rgba(19,26,35,.94);--ln:#33425a;--tx:#e8edf4;--mu:#8d9bb0;--ok:#52d6c4;--am:#ffb347;--bl:#60a5fa;
+font-family:Bahnschrift,"DIN Alternate","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent;color:var(--tx);font-variant-numeric:tabular-nums}
+.w{position:absolute;inset:calc(var(--u)*.3);background:var(--pn);border:max(1px,calc(var(--u)*.18)) solid var(--ln);border-radius:calc(var(--u)*1.6);display:grid;grid-template-rows:repeat(3,1fr);gap:calc(var(--u)*.7);padding:calc(var(--u)*.8);box-shadow:0 0 calc(var(--u)*2.5) #000a}
+.c{background:#ffffff0a;border:1px solid var(--ln);border-left:calc(var(--u)*.4) solid var(--k);border-radius:calc(var(--u)*1.1);padding:calc(var(--u)*.7) calc(var(--u)*1.1);display:flex;flex-direction:column;justify-content:space-between;min-width:0;min-height:0;overflow:hidden}
+.t{font-size:calc(var(--u)*1.35);color:var(--mu);font-weight:600}
+.r{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u)*1);min-width:0}.r>div{min-width:0}.r>div:last-child{text-align:right}
+.l{font-size:calc(var(--u)*1.15);color:var(--mu);white-space:nowrap}.v{font-size:calc(var(--u)*2.5);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.am{color:var(--am)}.gr{color:#4ade80}.ci{color:var(--ok)}
+.fb{height:calc(var(--u)*.7);border-radius:99px;background:#243042;overflow:hidden;margin-top:calc(var(--u)*.3)}.fb i{display:block;height:100%;width:0;background:var(--ok);border-radius:99px;transition:width .4s}
+</style></head><body>
+<div class="w">
+ <div class="c" style="--k:#ffb347"><div class="t">Mercancía y pago</div><div class="r"><div><span class="l">Carga</span><span class="v am" id="ca">Sin carga</span></div><div><span class="l">Ingreso</span><span class="v gr" id="pa">$0</span></div></div></div>
+ <div class="c" style="--k:#60a5fa"><div class="t">Contrato</div><div class="r"><div><span class="l">Ruta</span><span class="v ci" id="ru">-- → --</span></div><div><span class="l">Tiempo límite</span><span class="v am" id="ti">--</span></div></div></div>
+ <div class="c" style="--k:#52d6c4"><div class="t">Estado del vehículo</div>
+  <div class="r"><div><span class="l">Presión de aire</span><span class="v ci" id="ai">0 PSI</span></div><div><span class="l">Combustible</span><span class="v ci" id="co">0 L</span><div class="fb"><i id="fb"></i></div></div></div>
+  <div class="r"><div><span class="l">Daño del camión</span><span class="v ci" id="dc">0 %</span></div><div><span class="l">Daño del remolque</span><span class="v ci" id="dr">0 %</span></div></div></div>
+</div>
+<script>
+const $=i=>document.getElementById(i);
+async function t(){try{const d=await(await fetch('/data',{cache:'no-store'})).json();
+ $('ca').textContent=(d.cargo||'Sin carga')+(d.peso>0?' ('+d.peso.toFixed(1)+' t)':'');
+ $('pa').textContent='$'+(+d.ingresos||0).toLocaleString();
+ $('ru').textContent=(d.origen||'--')+' → '+(d.destino||'--');$('ti').textContent=d.t_restante||'--';
+ $('ai').textContent=Math.round(d.aire)+' PSI';$('co').textContent=Math.round(d.comb)+' L';
+ $('fb').style.width=Math.max(0,Math.min(1,d.comb/(d.cap||909)))*100+'%';
+ $('dc').textContent=Math.round(Math.max(d.w_eng,d.w_tra,d.w_cha))+' %';$('dr').textContent=Math.round(d.w_trl)+' %';
+}catch(e){}setTimeout(t,200)}
+t();
+</script></body></html>

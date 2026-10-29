@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Termofreno mini</title>
+<style>
+:root{--bg:#131a23;--pn:#1a2330;--key:#243042;--ln:#33425a;--tx:#e8edf4;--mu:#8d9bb0;--ok:#52d6c4;--am:#ffb347;--rd:#ff5a4d;--z:var(--ok);--zv:#28d66c;--za:#ffb020;--zr:#ff3d2e;
+--num:"Bahnschrift","Segoe UI Variable","Segoe UI",system-ui,sans-serif;font-family:var(--num);color-scheme:dark}
+*{box-sizing:border-box;-webkit-user-select:none;user-select:none}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--tx)}
+body{display:flex;flex-direction:column;border:1px solid var(--ln);border-radius:14px;padding:6px 10px 8px;cursor:move}
+.top{display:flex;align-items:center;gap:6px;height:22px;flex:none}
+.top b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);margin-right:auto}
+.ib{all:unset;display:grid;place-items:center;width:22px;height:22px;border-radius:7px;color:var(--mu);cursor:pointer;opacity:0;transition:opacity .15s,background .15s,color .15s}
+body:hover .ib{opacity:1}.ib:hover{background:var(--key);color:var(--tx)}.ib svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dw{flex:1;min-height:0;display:grid;place-items:center}
+svg.dial{width:100%;height:100%;max-height:100%}
+.dial .bz{fill:#0a0e15;stroke:#4a5568;stroke-width:3}.dial .bz2{fill:none;stroke:#1d2633;stroke-width:5}
+.dial .zn path{fill:none;stroke-width:8}.dial .zn path:nth-child(1){stroke:var(--zv)}.dial .zn path:nth-child(2){stroke:var(--za)}.dial .zn path:nth-child(3){stroke:var(--zr)}
+.dial .tk line{stroke:#e8edf4;stroke-width:1.6}.dial .tk text{font:600 8.5px var(--num);fill:#aab6c8;text-anchor:middle;dominant-baseline:middle}
+.dial .nd{transform-origin:100px 92px;transform:rotate(-135deg);transition:transform .45s cubic-bezier(.3,1.35,.5,1)}.dial .nd polygon{fill:#ff5a3c;filter:drop-shadow(1px 2px 1.5px #000a)}
+.dial .tm{transform-origin:100px 92px}.dial.tre .tm{animation:tem .09s infinite alternate linear}
+@keyframes tem{from{transform:rotate(calc(var(--amp,1) * -1deg))}to{transform:rotate(calc(var(--amp,1) * 1deg))}}
+.dial .hb{fill:#c9d1de;stroke:#2a3340;stroke-width:2}.dial .tn{font:600 27px var(--num);text-anchor:middle;fill:var(--z)}.dial .tl{display:none}
+.st{flex:none;display:flex;align-items:center;justify-content:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--z);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-top:2px}
+.st i{width:8px;height:8px;border-radius:50%;background:var(--c,var(--rd));box-shadow:0 0 8px var(--c,var(--rd));flex:none}
+.st.off{color:var(--mu)}
+html.sa *{animation:none!important;transition:none!important}
+</style></head><body>
+<div class="top"><b>Termofreno</b>
+ <button class="ib" id="op" title="Transparencia"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.2 6 10.5a6 6 0 0 1-12 0C6 9.2 12 3 12 3z"/></svg></button>
+ <button class="ib" id="ex" title="Volver a la ventana completa"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8 8M10 20H4v-6M4 20l8-8"/></svg></button></div>
+<div class="dw" id="g"></div>
+<div class="st off" id="s"><i></i><span>Esperando al juego</span></div>
+<script>
+const $=i=>document.getElementById(i);
+const call=async(m,...a)=>{try{return await window.pywebview.api[m](...a)}catch(e){return null}};
+function dialHTML(){let t='';for(let i=0;i<=8;i++){const a=(135+270*i/8)*Math.PI/180,c=Math.cos(a),n=Math.sin(a),m=i%2?55:50;t+=`<line x1="${100+60*c}" y1="${92+60*n}" x2="${100+m*c}" y2="${92+m*n}"/>`+(i%2?'':`<text x="${100+40*c}" y="${92+40*n}"></text>`)}
+ const P=g=>[100+70*Math.cos(g*Math.PI/180),92+70*Math.sin(g*Math.PI/180)].map(v=>v.toFixed(1)).join(' '),d='M'+P(135)+' A70 70 0 1 1 '+P(45);
+ return `<svg class="dial" viewBox="0 0 200 184"><circle class="bz" cx="100" cy="92" r="88"/><circle class="bz2" cx="100" cy="92" r="82"/><g class="zn"><path d="${d}" pathLength="100"/><path d="${d}" pathLength="100"/><path d="${d}" pathLength="100"/></g><g class="tk">${t}</g><text class="tn" x="100" y="136">25°</text><g class="nd"><g class="tm"><polygon points="97.5,92 100,26 102.5,92 101,106 99,106"/></g></g><circle class="hb" cx="100" cy="92" r="7"/></svg>`}
+function dialSet(s,T,min,max,tf,col,ok){const r=max-min,f=ok?Math.max(0,Math.min(1,(T-min)/r)):0,a=Math.max(0,Math.min(1,(tf-min)/r)),m=a+(1-a)*.6,q=s.querySelectorAll('.zn path'),z=(e,x,y)=>e.setAttribute('stroke-dasharray','0 '+(x*100)+' '+((y-x)*100)+' 100');
+ z(q[0],0,a);z(q[1],a,m);z(q[2],m,1);s.querySelector('.nd').style.transform='rotate('+(-135+270*f)+'deg)';
+ s.querySelectorAll('.tk text').forEach((e,i)=>e.textContent=Math.round((min+r*i/4)/5)*5);s.style.setProperty('--z',col);s.style.opacity=ok?1:.45;
+ s.querySelector('.tn').textContent=ok?Math.round(T)+'°':'--';
+ const tr=ok&&f>=.85;s.classList.toggle('tre',tr);if(tr)s.style.setProperty('--amp',(.8+Math.min(1,(f-.85)/.15)*1.7).toFixed(2))}
+$('g').innerHTML=dialHTML();const dial=$('g').firstChild;dialSet(dial,25,25,450,260,'var(--ok)',false);
+async function bucle(){
+ const e=await call('estado');
+ if(e){const T=+e.temp||25,col=T>=e.tmax?'var(--rd)':T>e.tfade?'var(--am)':'var(--ok)',on=e.juego;
+  dialSet(dial,T,25,e.tmax,e.tfade,col,on);
+  const s=$('s');s.className='st'+(on?'':' off');s.style.setProperty('--z',col);s.firstChild.style.setProperty('--c',on?(e.pausado?'var(--am)':'#4ade80'):'var(--rd)');
+  s.lastChild.textContent=!on?'Esperando al juego':e.pausado?'Juego en pausa':(T>=e.tmax?'Sin frenos':T>e.tfade?'Fading':'Conectado')+' · '+Math.round(e.efic*100)+' %'}
+ setTimeout(bucle,200)}
+$('ex').onclick=()=>call('mini_volver');
+$('op').onclick=()=>call('mini_opacidad');
+window.addEventListener('pywebviewready',async()=>{const c=await call('config');if(c&&c.reducir_anim)document.documentElement.classList.add('sa')});
+bucle();
+</script></body></html>

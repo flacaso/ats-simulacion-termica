@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><title>Termofreno - Barra superior</title>
+<style>
+:root{--u:min(1vw,2.4vh);--pn:rgba(19,26,35,.94);--ln:#33425a;--tx:#e8edf4;--mu:#8d9bb0;--ok:#52d6c4;--am:#ffb347;--rd:#ff5a4d;--z:var(--ok);
+font-family:Bahnschrift,"DIN Alternate","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:transparent;color:var(--tx);font-variant-numeric:tabular-nums}
+.w{position:absolute;inset:calc(var(--u)*.4);background:var(--pn);border:max(1px,calc(var(--u)*.2)) solid var(--ln);border-radius:calc(var(--u)*2);display:grid;grid-template-rows:auto 1fr;gap:calc(var(--u)*.9);padding:calc(var(--u)*1.1);box-shadow:0 0 calc(var(--u)*3) #000a}
+.hd{display:flex;align-items:center;gap:calc(var(--u)*1);min-width:0;font-size:calc(var(--u)*2.2);font-weight:600}
+.hd i{width:calc(var(--u)*.8);height:calc(var(--u)*2.2);border-radius:99px;background:var(--am);flex:none}.hd span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.hd em{margin-left:auto;font-style:normal;font-size:calc(var(--u)*1.6);color:var(--am);white-space:nowrap}
+.m{display:grid;grid-template-columns:1fr 1.5fr 1.25fr;gap:calc(var(--u)*.9);min-height:0}
+.c{background:#ffffff0a;border:1px solid var(--ln);border-radius:calc(var(--u)*1.4);padding:calc(var(--u)*1) calc(var(--u)*1.2);display:flex;flex-direction:column;justify-content:space-between;min-width:0;min-height:0;overflow:hidden}
+.l{font-size:calc(var(--u)*1.6);color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.n{font-size:calc(var(--u)*9);font-weight:600;line-height:1}.n small{font-size:calc(var(--u)*1.8);color:var(--mu);font-weight:400;margin-left:calc(var(--u)*.4)}.g{font-size:calc(var(--u)*5);font-weight:600;color:var(--am);line-height:1}
+.br{border-color:var(--z);box-shadow:inset 0 0 calc(var(--u)*2) color-mix(in srgb,var(--z) 25%,transparent)}.br .n{color:var(--z)}
+.hb{height:calc(var(--u)*1.3);border-radius:99px;background:#243042;overflow:hidden}.hb i{display:block;height:100%;width:0;background:var(--z);border-radius:99px;transition:width .3s,background .3s}
+.s{font-size:calc(var(--u)*1.8);font-weight:600;color:var(--z);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r{display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*.8);font-size:calc(var(--u)*1.8);min-width:0}.r span:first-child{color:var(--mu);white-space:nowrap}.v{font-weight:600;color:var(--mu);white-space:nowrap}.v.on{color:#4ade80}
+.rt{display:flex;gap:calc(var(--u)*.4)}.rt i{width:calc(var(--u)*1.7);height:calc(var(--u)*1.7);border-radius:calc(var(--u)*.4);background:#243042}.rt i.on{background:#60a5fa;box-shadow:0 0 calc(var(--u)*.8) #60a5fa}
+</style></head><body>
+<div class="w"><div class="hd"><i></i><span id="tr">Camión</span><em id="st"></em></div>
+ <div class="m">
+  <div class="c"><div class="l">Velocidad</div><div class="n"><span id="vel">0</span><small>km/h</small></div><div><div class="l">Marcha</div><div class="g" id="gear">N</div></div></div>
+  <div class="c br"><div class="l">Temperatura de frenos</div><div class="n" id="tmp">25°</div><div class="hb"><i id="hb"></i></div><div class="s" id="sts">Frenos en rango normal</div></div>
+  <div class="c"><div class="r"><span>Freno de motor</span><span class="v" id="mb">Apagado</span></div><div class="r"><span>Retarder</span><div class="rt" id="rt"></div></div><div class="r"><span>Crucero</span><span class="v" id="cc">Apagado</span></div><div class="r"><span>Torretas</span><span class="v" id="bc">Apagadas</span></div></div>
+ </div></div>
+<script>
+const $=i=>document.getElementById(i);let rm=0;
+const sw=(id,on,si,no)=>{const e=$(id);e.textContent=on?si:no;e.classList.toggle('on',!!on)};
+async function t(){try{const d=await(await fetch('/data',{cache:'no-store'})).json();
+ $('tr').textContent=((d.marca||'')+' '+(d.modelo||'')).trim()||'Camión';
+ $('st').textContent=d.conectado?(d.pausado?'Juego en pausa':''):'Esperando al juego';
+ $('vel').textContent=Math.round(d.vel);$('gear').textContent=d.gear;
+ const T=+d.temp,tm=d.temp_max||450,tf=d.temp_fade||260;
+ $('tmp').textContent=Math.round(T)+'°';$('hb').style.width=Math.max(0,Math.min(1,(T-25)/(tm-25)))*100+'%';
+ document.documentElement.style.setProperty('--z',T>=tm?'var(--rd)':T>tf?'var(--am)':'var(--ok)');
+ $('sts').textContent=T>=tm?'Frenos sin efecto':T>tf?'Fading: usa el motor':'Frenos en rango normal';
+ sw('mb',d.mb_on,'Activo','Apagado');sw('cc',d.cc_on,Math.round(d.cc_speed)+' km/h','Apagado');sw('bc',d.beacon,'Encendidas','Apagadas');
+ const mx=d.retarder_max>0?d.retarder_max:5;if(rm!==mx){rm=mx;$('rt').innerHTML='<i></i>'.repeat(mx)}
+ [...$('rt').children].forEach((s,i)=>s.classList.toggle('on',i<(d.retarder||0)));
+}catch(e){$('st').textContent='Sin conexión'}setTimeout(t,200)}
+t();
+</script></body></html>

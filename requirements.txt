@@ -1,0 +1,7 @@
+pywebview
+pystray
+pillow
+requests
+pyvjoy
+inputs
+segno
